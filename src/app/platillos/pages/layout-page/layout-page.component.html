@@ -1,0 +1,16 @@
+
+<mat-toolbar>
+  <img src="../../../../assets/images/logo.png" style="height: 50px;"/>
+
+  <span class="spacer"></span>
+
+  <span>{{ user?.username }}</span>
+
+  <button mat-button (click)="onLogout()" *ngIf="user != undefined" >
+    Salir
+  </button>
+
+</mat-toolbar>
+
+
+<router-outlet></router-outlet>
