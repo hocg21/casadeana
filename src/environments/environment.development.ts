@@ -1,16 +1,16 @@
 import { FirebaseConfig } from "src/app/interfaces/firebase-config.interface";
 
 const firebase: FirebaseConfig = {
-    apiKey: "AIzaSyBM_aZEGpwuntcXHS7iyQxlbO0n8Jkl3no",
-    authDomain: "casadeana-dev.firebaseapp.com",
-    projectId: "casadeana-dev",
-    storageBucket: "casadeana-dev.appspot.com",
-    messagingSenderId: "523319701285",
-    appId: "1:523319701285:web:d74ae59edaaad5f9a1b4cc",
-    measurementId: "G-C09XMYJW7B"
+  apiKey: "AIzaSyDkYNK3bqcDk88UdbUJEjCheooHAELkoEU",
+  authDomain: "casadeana-f44c8.firebaseapp.com",
+  projectId: "casadeana-f44c8",
+  storageBucket: "casadeana-f44c8.appspot.com",
+  messagingSenderId: "443930101562",
+  appId: "1:443930101562:web:ebaa1388748c18f3703203",
+  measurementId: "G-TTT7F4D72T"
 }
 
 export const environment = {
-    production: false, 
-    firebase 
+    production: false,
+    firebase
 };

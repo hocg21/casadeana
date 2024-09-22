@@ -1,3 +1,29 @@
-<p>list-page works!</p>
+<mat-accordion *ngFor="let dia of dias">
+  <mat-expansion-panel (opened)="panelOpenState = true"  (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ dia.nombre }} {{getRelativeDayInWeek(dia.diaIndex + 1 ) | date:'dd/MM/yyyy'}}
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-panel-description>
 
-Aqui va la lista de los platillos de la semana
+    </mat-panel-description>
+
+    <div class="container responsive-grid" >
+      <mat-card class="platillo-card" *ngFor="let platillo of getPlatillosPorDia(dia.diaIndex)" >
+        <mat-card-header class="platillo-header-image"  >
+          <div mat-card-avatar class="platillo-header-image"
+          style="background-image: url('{{ platillo | recomendadoImagen  }}') ;"
+          ></div>
+          <mat-card-title>{{ platillo.nombre }}</mat-card-title>
+        </mat-card-header>
+        <img class="img-card" mat-card-image src="{{platillo | platilloImagen}} " />
+        <mat-card-content>
+          {{ platillo.descripcion }}
+          aqui en teoria va la descripcion leve o intensa del platillo
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </mat-expansion-panel>
+</mat-accordion>

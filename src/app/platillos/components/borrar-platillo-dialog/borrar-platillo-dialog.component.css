@@ -1,0 +1,7 @@
+[mat-dialog-content]{
+  /* max-width: 450px !important; */
+  padding: 10px 25px;
+}
+[mat-dialog-actions] {
+  justify-content: flex-end;
+}

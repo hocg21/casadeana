@@ -1,0 +1,59 @@
+
+<h5 mat-dialog-title>Asignar Platillos al d&iacute;a {{data.fecha | date:'dd/MM/yyyy'}} </h5>
+<mat-divider></mat-divider>
+
+<div mat-dialog-content>
+
+  <div cdkDropListGroup>
+    <h3>Platillos Asignados ({{platillosAsignados.length}})</h3>
+    <div class="platillos-asignados">
+      <div cdkDropList
+      #platillos_asignados="cdkDropList"
+      [cdkDropListData] = "platillosAsignados"
+      [cdkDropListConnectedTo]="[platillos_catalogo]"
+      class="platillos-list"
+      (cdkDropListDropped)="drop($event)">
+        <div class="platillo-box" *ngFor="let platillo of platillosAsignados" cdkDrag>
+          <img class="preview-platillo" src="{{platillo | platilloImagen}} " />
+          <mat-icon
+            class="icon-recomendado"
+            *ngIf="platillo.recomendado === true"  >
+            eco </mat-icon>
+
+          <span>{{platillo.nombre}} </span>
+
+        </div>
+      </div>
+    </div>
+    <h3>Platillos</h3>
+    <div class="platillos-container">
+      <div
+        cdkDropList
+        #platillos_catalogo="cdkDropList"
+        [cdkDropListData]="platillos"
+        [cdkDropListConnectedTo]="[platillos_asignados]"
+        class="platillos-list"
+        (cdkDropListDropped)="drop($event)">
+        <div class="platillo-box"  *ngFor="let platillo of platillos" cdkDrag>
+          <img class="preview-platillo" src="{{platillo | platilloImagen}} " />
+          <mat-icon
+            class="icon-recomendado"
+            *ngIf="platillo.recomendado === true"  >
+            eco </mat-icon>
+
+          <span>{{platillo.nombre}} </span>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-actions >
+  <button mat-stroked-button (click)="cerrarModal()" >Cancelar</button>
+  <button mat-raised-button color="primary"  cdkFocusInitial (click)="guardarPlatillos()" >Guardar</button>
+</div>
+

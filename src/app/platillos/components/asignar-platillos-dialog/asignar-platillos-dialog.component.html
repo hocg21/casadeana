@@ -1,0 +1,38 @@
+
+<h5 mat-dialog-title>Asignar Platillos al d&iacute;a {{data.dia | date:'dd/MM/yyyy'}} </h5>
+Platillos seleccionados: {{plt.selectedOptions.selected.length + platillosAsignados.length }}
+
+<mat-divider></mat-divider>
+
+<div mat-dialog-content>
+
+  <mat-selection-list
+  >
+    <mat-list-option  *ngFor="let platillo of data.platillosAsignados"
+      [selected]="true"
+    >
+      {{platillo['platillo']['nombre']}}
+    </mat-list-option>
+  </mat-selection-list>
+
+  <mat-divider></mat-divider>
+
+  <mat-selection-list #plt
+    (selectionChange)="onChange($event)"
+  >
+    <mat-list-option  *ngFor="let platillo of data.platillos"
+      [selected]="platillo.checked"
+      [value]="platillo"
+    >
+      {{platillo.nombre}}
+    </mat-list-option>
+  </mat-selection-list>
+
+
+</div>
+<mat-divider></mat-divider>
+<div mat-dialog-actions >
+  <button mat-stroked-button (click)="cerrarModal()" >Cancelar</button>
+  <button mat-raised-button color="primary"  cdkFocusInitial (click)="guardarPlatillos()" >Guardar</button>
+</div>
+

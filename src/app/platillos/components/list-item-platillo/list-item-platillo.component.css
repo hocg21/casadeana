@@ -1,0 +1,12 @@
+.recomendado{
+  background-color:rgba(0, 128, 0, 0.432);
+}
+.icon-recomendado{
+  color:green !important;
+  margin: 0px;
+}
+
+.icon-borrar{
+  --mdc-fab-container-color: #fff;
+  color:  rgb(173, 29, 29);;
+}

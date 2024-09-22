@@ -1,0 +1,34 @@
+
+<div>
+
+  Semana #{{getWeekNumber() }} <br>
+  Del {{getRelativeDayInWeek(1) | date:'dd/MM/yyyy'}} al {{getRelativeDayInWeek(5) | date:'dd/MM/yyyy'}}
+
+</div>
+<mat-grid-list cols="{{currentScreenSize == 'xsm' ? 1 : 5 }}" rowHeight="2:1" class="semana">
+
+  <mat-grid-tile class="dia"  *ngFor="let dia of dias " >
+    <mat-grid-tile-header class="header-dia" (click)="asignarPlatillos(dia.diaIndex + 1)">
+      {{dia.nombre}} {{getRelativeDayInWeek(dia.diaIndex + 1 ) | date:'dd/MM/yyyy'}}
+    </mat-grid-tile-header>
+    <mat-list >
+      <mat-list-item *ngFor="let platillo of getPlatillosPorDia(dia.diaIndex )" >
+        <img  matListItemAvatar src="{{platillo | platilloImagen}} " />
+      <div mat-line> {{platillo.nombre }}</div>
+    </mat-list-item>
+  </mat-list>
+  </mat-grid-tile>
+
+
+</mat-grid-list>
+<br>
+<mat-divider></mat-divider>
+<br>
+<div>
+  <button mat-raised-button color="primary" (click)="abrirCrearPlatillo()" >Crear platillo</button>
+</div>
+<br>
+
+<div>
+  <list-item-platillo [platillos]="platillos"></list-item-platillo>
+</div>

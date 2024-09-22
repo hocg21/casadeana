@@ -1,0 +1,16 @@
+
+<h2 mat-dialog-title>Elimar platillo</h2>
+
+<mat-divider></mat-divider>
+
+<div mat-dialog-content>
+  ¿Seguro que deseas eliminar el platillo <strong>{{data.nombre}}</strong> ?
+  <p>{{data.descripcion}}</p>
+</div>
+
+<mat-divider></mat-divider>
+
+<div mat-dialog-actions>
+  <button mat-stroked-button (click)="cerrarModal()" >Cancelar</button>
+  <button mat-raised-button color="warn"  cdkFocusInitial (click)="eliminarPlatillo(data.id)" >Eliminar</button>
+</div>

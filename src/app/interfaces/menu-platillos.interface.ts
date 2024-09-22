@@ -1,15 +1,24 @@
 export interface Platillo {
     id: string,
     nombre: string,
+    descripcion?: string,
     img: string,
-    recomendado: boolean, 
+    recomendado: boolean
 }
 
 export interface PlatilloAsignacion {
     idAsignacion: string,
-    diaIndex: number, 
+    diaIndex: number,
     precio: string,
-    platillo: Platillo 
+    platillo: Platillo
 }
 
 
+export interface PlatilloAAsignar{
+  indice_dia: number,
+  id: string
+}
+export interface PlatilloAsignado {
+  num_semana: string,
+  platillos: Array<PlatilloAAsignar>
+}
