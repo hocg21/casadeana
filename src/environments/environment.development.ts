@@ -8,11 +8,9 @@ const firebase: FirebaseConfig = {
   messagingSenderId: "443930101562",
   appId: "1:443930101562:web:ebaa1388748c18f3703203",
   measurementId: "G-TTT7F4D72T"
-
 }
 
 export const environment = {
-  production: false,
-  firebase,
-  baseUrl: 'http://localhost:3000'
+    production: false,
+    firebase
 };

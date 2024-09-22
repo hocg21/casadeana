@@ -11,9 +11,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatGridListModule} from '@angular/material/grid-list';
-
-
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card'
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 
 @NgModule({
@@ -30,8 +35,16 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatListModule,
     MatAutocompleteModule,
     MatInputModule,
+    MatCheckboxModule,
     MatFormFieldModule,
-    MatGridListModule
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatGridListModule,
+    DragDropModule,
+    MatCardModule,
+    MatProgressBarModule,
+    MatExpansionModule
   ]
 })
 export class MaterialModule { }

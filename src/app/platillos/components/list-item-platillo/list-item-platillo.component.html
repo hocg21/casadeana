@@ -1,0 +1,17 @@
+<mat-list>
+  <mat-list-item *ngFor="let platillo of platillos">
+    <img  matListItemAvatar src="{{platillo | platilloImagen}} " />
+    <span matListItemTitle >
+      <button   mat-icon-button class="icon-borrar"  (click)="abirBorrarPlatillo(platillo)">
+        <mat-icon >delete</mat-icon>
+      </button>
+      <mat-icon class="icon-recomendado"
+        *ngIf="platillo.recomendado === true"  >
+        eco
+      </mat-icon>
+    {{platillo.nombre}}
+    </span>
+  <span matListItemLine  >{{platillo.descripcion}}</span>
+
+  </mat-list-item>
+</mat-list>

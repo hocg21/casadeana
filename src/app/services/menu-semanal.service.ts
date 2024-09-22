@@ -7,7 +7,7 @@ import { DocumentData, DocumentReference, DocumentSnapshot, QueryDocumentSnapsho
   providedIn: 'root'
 })
 export class MenuSemanalService {
-  constructor(private firestoreService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService) { }
 
   /**
    * Nombre de la colección para platillos
@@ -17,13 +17,13 @@ export class MenuSemanalService {
   private coleccionMenuSemanal: string = 'menu_semanal';
 
   /**
-   * Obtiene listado de los platillos disponibles. 
-   * 
-   * @author JHSS 2024-08-18 18:18:04 
-   * @returns 
+   * Obtiene listado de los platillos disponibles.
+   *
+   * @author JHSS 2024-08-18 18:18:04
+   * @returns
    */
   public async catalogoDePlatillos(){
-      const documentos = await this.firestoreService.getDocumentsCollection(this.coleccionPlatillos);
+      const documentos = await this.firebaseService.getDocumentsCollection(this.coleccionPlatillos);
       const platillos: Platillo[] = [];
 
       /* Procesar documentos. */
@@ -41,9 +41,9 @@ export class MenuSemanalService {
   }
 
   /**
-   * 
-   * @param doc 
-   * @returns 
+   *
+   * @param doc
+   * @returns
    */
   private extraerDatosPlatillo(doc: QueryDocumentSnapshot<DocumentData, DocumentData>):Platillo{
     const data = doc.data();
@@ -52,6 +52,7 @@ export class MenuSemanalService {
     return {
       id,
       nombre: data['nombre'],
+      descripcion: data['descripcion'],
       recomendado: data['recomendado'],
       img: data['img']
     };
@@ -59,17 +60,18 @@ export class MenuSemanalService {
 
   /**
    * Platillos asignados al menu en la semana.
-   * 
+   *
    * @author JHSS 2024-08-18 22:30:39
    * @param semana Número de semana
-   * @param anio Año 
-   * @returns 
+   * @param anio Año
+   * @returns
    */
   public async obtenerMenuDeSemana(semana:string, anio: string):Promise<PlatilloAsignacion[]>{
     /* Ruta a los platillos asignados.  */
+    console.log(`${this.coleccionMenuSemanal}/${semana}_${anio}/platillos`)
     const platillosPath = `${this.coleccionMenuSemanal}/${semana}_${anio}/platillos`;
-    const documents = await this.firestoreService.getDocumentsCollection(platillosPath); 
-    
+    const documents = await this.firebaseService.getDocumentsCollection(platillosPath);
+
     const aux: {
       idAsignacion:string,
       diaIndex: number,
@@ -93,7 +95,7 @@ export class MenuSemanalService {
     const p: PlatilloAsignacion[] = await Promise.all(
       aux.map( async(e) => {
         const { idAsignacion, diaIndex, precio } = e;
-        const platillo = await this.firestoreService.getDocumentByReference(e.platillo);
+        const platillo = await this.firebaseService.getDocumentByReference(e.platillo);
         const dataPlatillo = platillo.data();
         const _aux_ = {
           id: platillo.id,
@@ -108,6 +110,14 @@ export class MenuSemanalService {
     );
 
     return p;
+  }
+
+  public async agregarPlatillo(platillo: any)
+  {
+    //addDocument puede regresar la info del platillo si se manda un tercer parametro siendo el id del platillo
+    const new_platillo =  await this.firebaseService.addDocument(this.coleccionPlatillos, platillo)
+    return new_platillo;
+
   }
 
 }

@@ -1,0 +1,24 @@
+
+.semana  {
+  margin-top:10px
+}
+
+.dia {
+  border: 1px solid #000;
+}
+
+.header-dia{
+  cursor: pointer;
+}
+
+.recomendado{
+  background-color:rgba(0, 128, 0, 0.432);
+}
+.icon-recomendado{
+  color:green !important;
+  margin: 0px;
+}
+
+.mat-list-icon {
+  color: rgba(0, 0, 0, 0.54);
+}
