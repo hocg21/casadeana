@@ -8,8 +8,8 @@ const routes: Routes = [
   {
     path:'auth',
     loadChildren: () => import ('./auth/auth.module').then(m=>m.AuthModule),
-    canActivate: [PublicGuard],
-    canMatch: [PublicGuard]
+    // canActivate: [PublicGuard],
+    // canMatch: [PublicGuard]
   },
   {
     path:'',
@@ -18,11 +18,6 @@ const routes: Routes = [
   {
     path:'404',
     component: NotFoundPageComponent
-  },
-  {
-    path:'',
-    redirectTo: 'platillos',
-    pathMatch: 'full'
   },
   {
     path:'**',

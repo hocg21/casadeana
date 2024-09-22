@@ -18,12 +18,13 @@ export class LayoutPageComponent {
   ){}
 
   get user(): User | undefined {
-    return this.authService.currentUser();
+    return ;
+    //return this.authService.currentUser();
   }
 
   onLogout(){
-    this.authService.logout();
-    this.router.navigate(['/'])
+    /* this.authService.logout();
+    this.router.navigate(['/']) */
   }
 
 }

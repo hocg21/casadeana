@@ -1,8 +1,24 @@
+import { environment } from "src/environments/environments";
 import { Injectable } from '@angular/core';
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Analytics, getAnalytics } from "firebase/analytics";
-import { addDoc, collection, doc, DocumentReference, Firestore, getDoc, getDocs, getFirestore, setDoc, updateDoc } from "firebase/firestore";
-import { environment } from "src/environments/environment";
+import { 
+  getAuth, Auth, 
+  GoogleAuthProvider, 
+  signInWithRedirect, 
+  getRedirectResult, 
+  getAdditionalUserInfo, 
+  signInWithCredential, 
+  OAuthCredential, 
+  signOut
+} from "firebase/auth";
+import { 
+  addDoc, collection, 
+  doc, DocumentReference, 
+  Firestore, getDoc, 
+  getDocs, getFirestore, 
+  setDoc, updateDoc 
+} from "firebase/firestore";
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +27,101 @@ export class FirebaseService {
   private app: FirebaseApp;
   private analytics: Analytics;
   private firestore: Firestore;
+  auth: Auth;
+  private googleAuthProvider: GoogleAuthProvider;
 
   constructor() { 
     this.app = initializeApp(environment.firebase);  
-    this.analytics = getAnalytics();
+    this.analytics = getAnalytics(this.app);
     this.firestore = getFirestore(this.app);
+    this.auth = getAuth(this.app);
+    this.googleAuthProvider = new GoogleAuthProvider();
+  }
+
+  public currentUser(){
+    return this.auth.currentUser;
+  }
+
+  /**
+   * Redirecciona para login con google.
+   *  
+   * @author JHSS 2024-08-23 21:27:44
+   */
+  public signInGoogleWithRedirect():void{
+    signInWithRedirect(this.auth, this.googleAuthProvider).
+      catch(error => {
+        console.log('signInError', error);
+        
+      })
+  }
+
+  /**
+   * signout
+   */
+  public signout() {
+    return signOut(this.auth);
+  }
+
+
+  /**
+   * Obtiene la información del usuario al ingresar 
+   * con google. 
+   * 
+   * @author JHSS 2024-08-23 21:28:39
+   * @returns 
+   */
+  public async getRedirectResult(){
+    try {
+      const result = await getRedirectResult(this.auth) 
+      if (result !== null) {
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        return {
+          credential, user: result.user
+        };     
+      }
+    } catch (error:any) {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+      console.log({
+        errorCode, errorMessage, email, credential
+      });
+    }
+    return null; 
+  }
+
+  /**
+   * Inicia sesion en firebase con las credenciales del usuario
+   * logeado con google. 
+   * 
+   * @author JHSS 2024-08-23 21:31:01
+   * @param credential 
+   */
+  public async signInToFirebase(credential: OAuthCredential){
+    signInWithCredential(this.auth, credential)
+      .then(user => {
+        console.log({userCredential: user});
+      })
+      .catch(error => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The credential that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+        console.log({
+          errorCode, errorMessage, email, credential
+        });
+        
+      });
+
   }
 
   /**

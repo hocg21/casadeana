@@ -9,8 +9,14 @@ const routes: Routes = [
     path: '',
     component: LayoutPageComponent,
     children: [
-      {path: 'login', component: LoginPageComponent},
-      {path: '**', redirectTo: 'login'},
+      {
+        path: 'login',
+        component: LoginPageComponent
+      },
+      {
+        path: '**', 
+        redirectTo: 'login'
+      }
     ]
   }
 ];

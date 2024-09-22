@@ -12,15 +12,15 @@ export class PublicGuard implements CanMatch, CanActivate{
   ) { }
 
   private checkAuthStatus() : boolean | Observable<boolean> {
-
-    return this.authService.checkAuthentication()
+    return true;
+    /* return this.authService.checkAuthentication()
       .pipe(
         tap( isAuthenticated => {
           if( isAuthenticated )
             this.router.navigate(['./nuevo-platillo'])
         }),
         map( isAuthenticated => !isAuthenticated)
-      )
+      ) */
 
   }
 
