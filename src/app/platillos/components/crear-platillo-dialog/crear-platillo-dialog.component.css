@@ -1,0 +1,8 @@
+[mat-dialog-content]{
+  height: 100vh !important;
+  width: 100% !important;
+  padding: 10px 25px;
+}
+[mat-dialog-actions] {
+  justify-content: flex-end;
+}

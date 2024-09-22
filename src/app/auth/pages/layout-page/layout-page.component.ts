@@ -23,7 +23,7 @@ export class LayoutPageComponent {
 
   onLogout(){
     this.authService.logout();
-    this.router.navigate(['/'])
+    this.router.navigate(['/asignar-platillos'])
   }
 
 }
