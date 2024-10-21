@@ -23,8 +23,8 @@ export class LoginPageComponent implements OnInit {
   }
 
   async init(){
-
     const redirectResult = await this.firebaseService.getRedirectResult();
+
     if (redirectResult !== null) { // Usuario se ha logueado. 
       /* Guardar información de sesión. */
       this.authService.setSession(redirectResult.user, redirectResult.credential);
@@ -40,10 +40,10 @@ export class LoginPageComponent implements OnInit {
   }
     
   async clickLogin(){
-    await this.firebaseService.signout()
-      .then(so => { console.log(so);
-      })
-      .catch(error => {console.log(error);});
+    // await this.firebaseService.signout()
+    //   .then(so => { console.log(so);
+    //   })
+    //   .catch(error => {console.log(error);});
     await this.firebaseService.signInGoogleWithRedirect();
   }
 

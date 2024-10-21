@@ -5,20 +5,22 @@ import { User } from '../interfaces/user.interface';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { OAuthCredential, UserInfo } from 'firebase/auth';
 import { User as FBUser } from 'src/app/auth/interfaces/user.interface';
+import { UserSession } from 'src/app/interfaces/user-session';
+import { CredentialSession } from 'src/app/interfaces/credential-session';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
   private baseUrl = environment.baseUrl;
   private user?: UserInfo;
-  private _user: FBUser | null;
-  private _credential: OAuthCredential | null;
+  private _user: UserSession | null;
+  private _credential: CredentialSession | null;
 
   constructor(private http: HttpClient) { 
 
     // Load session 
-    const __u = sessionStorage.getItem('user');
-    const __c = sessionStorage.getItem('credential');
+    const __u: string|null = sessionStorage.getItem('user');
+    const __c: string|null = sessionStorage.getItem('credential');
 
     if (__u === null || __c === null) {
       this._user = null;
@@ -44,13 +46,13 @@ export class AuthService {
   }
 
   /**
-   * Indica si hay sesión de usuario. 
+   * Indica si hay sesión de usuario vigente.. 
    * 
    * @author JHSS 2024-09-21 21:46:48
    * @returns 
    */
   public loggedInUser():boolean{
-    return this._user !== null;
+    return this._user !== null && this._credential !== null;
   }
 
 
