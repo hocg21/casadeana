@@ -41,6 +41,10 @@ export class FirebaseService {
   public currentUser(){
     return this.auth.currentUser;
   }
+  
+  public loggedInUser():boolean{
+    return this.auth.currentUser !== null;
+  }
 
   /**
    * Redirecciona para login con google.

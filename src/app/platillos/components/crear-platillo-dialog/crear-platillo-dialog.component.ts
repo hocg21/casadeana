@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Platillo } from '../../../interfaces/menu-platillos.interface';
 import { MenuSemanalService } from '../../../services/menu-semanal.service';
@@ -7,7 +7,8 @@ import { MenuSemanalService } from '../../../services/menu-semanal.service';
 @Component({
   selector: 'app-crear-platillo-dialog',
   templateUrl: './crear-platillo-dialog.component.html',
-  styleUrls: ['./crear-platillo-dialog.component.css']
+  styleUrls: ['./crear-platillo-dialog.component.css'],
+  
 })
 export class CrearPlatilloDialogComponent {
 
@@ -22,10 +23,11 @@ export class CrearPlatilloDialogComponent {
 
   public platilloForm = new FormGroup({
     id: new FormControl<string>(''),
-    nombre: new FormControl<string>(''),
-    descripcion: new FormControl<string>(''),
+    nombre: new FormControl<string>('', Validators.required),
+    descripcion: new FormControl<string>('', Validators.required),
     img: new FormControl<string>(''),
-    recomendado: new FormControl<boolean>(false)
+    recomendado: new FormControl<boolean>(false),
+    precio: new FormControl<any>('', Validators.required)
   });
 
   get currentPlatillo(): Platillo {
@@ -41,26 +43,33 @@ export class CrearPlatilloDialogComponent {
 
 
 
-  guardarPlatillo():void{
-    // console.log({
-    //   formIsValid: this.platilloForm.valid,
-    //   value: this.platilloForm.value
+  async guardarPlatillo(){
 
-    // });
+    if (!this.platilloForm.valid) { // Formulario invalido. 
+      return;
+    }
 
-    // const nuevo_platillo = this.menuSemanalService.agregarPlatillo(this.platilloForm.value);
+    const {nombre, descripcion, recomendado, precio } = this.platilloForm.value;
+    const datos = {
+      nombre, descripcion, precio, recomendado: Boolean(recomendado), img: ''
+    }
 
-    // nuevo_platillo.then((p)=>{
-    //   this.nuevo_platillo_id  = p.id;
-    //   this.agregar_imagen = true;
-    // });
+    const platillo = await this.menuSemanalService.agregarPlatillo(datos).catch( error => {
+      console.log(error);
+      alert(error)
+      return null;
+      
+    });
 
-    this.agregar_imagen = true;
+    if (platillo !== null) {
+      console.log(platillo.id);
+      this.cerrarModal();
+    }
 
   }
 
   public fileToUpload: any;
-  public imageUrl: any;
+  public imageUrl: any = './assets/images/no_image.png';
 
   handleFileInput(event: Event) {
     const target = event.target as HTMLInputElement;

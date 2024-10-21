@@ -112,12 +112,8 @@ export class MenuSemanalService {
     return p;
   }
 
-  public async agregarPlatillo(platillo: any)
-  {
-    //addDocument puede regresar la info del platillo si se manda un tercer parametro siendo el id del platillo
-    const new_platillo =  await this.firebaseService.addDocument(this.coleccionPlatillos, platillo)
-    return new_platillo;
-
+  public agregarPlatillo(platillo: any){
+    return this.firebaseService.addDocument(this.coleccionPlatillos, platillo);
   }
 
 }

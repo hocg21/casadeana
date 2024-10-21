@@ -30,7 +30,7 @@ export class LoginPageComponent implements OnInit {
       this.authService.setSession(redirectResult.user, redirectResult.credential);
       this.router.navigate(['/asignar-platillos'])
       
-    }else if(this.authService.loggedInUser()){
+    } else if (this.firebaseService.loggedInUser() !== null){
       console.log('redireccionar, ya esta logueado.');  
       this.router.navigate(['/asignar-platillos'])
     }else{
