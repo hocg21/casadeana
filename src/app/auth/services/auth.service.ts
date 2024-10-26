@@ -5,20 +5,22 @@ import { User } from '../interfaces/user.interface';
 import { Observable, catchError, map, of, tap } from 'rxjs';
 import { OAuthCredential, UserInfo } from 'firebase/auth';
 import { User as FBUser } from 'src/app/auth/interfaces/user.interface';
+import { UserSession } from 'src/app/interfaces/user-session';
+import { CredentialSession } from 'src/app/interfaces/credential-session';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
 
   private baseUrl = environment.baseUrl;
   private user?: UserInfo;
-  private _user: FBUser | null;
-  private _credential: OAuthCredential | null;
+  private _user: UserSession | null;
+  private _credential: CredentialSession | null;
 
   constructor(private http: HttpClient) { 
 
     // Load session 
-    const __u = sessionStorage.getItem('user');
-    const __c = sessionStorage.getItem('credential');
+    const __u: string|null = sessionStorage.getItem('user');
+    const __c: string|null = sessionStorage.getItem('credential');
 
     if (__u === null || __c === null) {
       this._user = null;
@@ -42,53 +44,5 @@ export class AuthService {
     this._user = user;
     this._credential = credential;
   }
-
-  /**
-   * Indica si hay sesión de usuario. 
-   * 
-   * @author JHSS 2024-09-21 21:46:48
-   * @returns 
-   */
-  public loggedInUser():boolean{
-    return this._user !== null;
-  }
-
-
-  // currentUser(): User | undefined {
-
-  //   if (!this.user )
-  //     return undefined;
-
-  //   return structuredClone(this.user);
-
-  // }
-
-  // login (username: string, password: string): Observable<User>{
-  //   // http.post('login', {username, passowrd})
-  //   return this.http.get<User>(`${this.baseUrl}/users/1`)
-  //     .pipe (
-  //       tap( user =>  this.user = user ),
-  //       tap( user => localStorage.setItem('token', 'asdasfASasdfasdf') ),
-  //     );
-  // }
-
-  // checkAuthentication(): Observable<boolean>  {
-
-  //   if( !localStorage.getItem('token')) return of(false);
-
-  //   const token = localStorage.getItem('token');
-
-  //   return this.http.get<User>(`${this.baseUrl}/users/1`)
-  //    .pipe(
-  //     tap( user => this.user = user ),
-  //     map( user=> !!user ),
-  //     catchError( erro => of(false) )
-  //    )
-  // }
-
-  // logout(){
-  //   this.user = undefined;
-  //   localStorage.clear();
-  // }
 
 }

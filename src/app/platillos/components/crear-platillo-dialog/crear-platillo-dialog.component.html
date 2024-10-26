@@ -1,54 +1,72 @@
+<div class="grid grid-nogutter">
+
+  <!-- Header -->
+  <div class="col-12">
+    <h5 mat-dialog-title>Crear Platillo</h5>
+  </div>
+
+  <!-- Content -->
+  <div class="col-12">
+    <div mat-dialog-content>
+        <form #platillo_Form class="grid grid-nogutter" [formGroup]="platilloForm" (ngSubmit)="guardarPlatillo()">
+
+          <!-- Nombre -->
+          <div class="col-12 grid-nogutter">
+            <mat-form-field class="col-12">
+              <mat-label>Nombre platillo</mat-label>
+              <input matInput required type="text" formControlName="nombre" />
+            </mat-form-field>
+          </div>
+
+          <!-- Descripación  -->
+          <div class="col-12 grid-nogutter">
+            <mat-form-field class="col-12">
+              <mat-label>Descripción</mat-label>
+              <textarea matInput required formControlName="descripcion"></textarea>
+            </mat-form-field>
+          </div>
 
 
-<h5 mat-dialog-title>Nuevo Platillo</h5>
-
-<mat-divider></mat-divider>
-
-<div mat-dialog-content>
-
-  <form class="grid" [formGroup]="platilloForm" (ngSubmit)="guardarPlatillo()">
-
-    <img [src]=" currentPlatillo | platilloImagen " class="rounded mx-auto d-block" style="max-width: 100%;" />
-
-    <mat-form-field class="col-12">
-      <mat-label>Nombre platillo</mat-label>
-      <input
-        matInput
-        required
-        type="text"
-        formControlName="nombre"
-      />
-    </mat-form-field>
-
-    <mat-form-field class="col-12">
-      <mat-label>Descripci&oacute;n</mat-label>
-      <textarea
-        matInput
-        required
-        formControlName="descripcion"></textarea>
-    </mat-form-field>
-
-    <mat-form-field class="col-12">
-      <mat-label>Precio</mat-label>
-      <input
-        matInput
-        required
-        type="number"
-        formControlName="precio"
-      />
-    </mat-form-field>
+          <!-- Recomendado. -->
+          <div class="col-3 grid-nogutter" >
+            <mat-form-field class="col-12">
+              <mat-label>Precio</mat-label>
+              <span matPrefix>$ &nbsp;</span>
+              <input type="number" matInput placeholder="50.00" formControlName="precio" min="0" step="0.01">
+              <!-- <mat-icon matSuffix>mode_edit</mat-icon> -->
+            </mat-form-field>
+          </div>
+          <!-- Recomendado. -->
+          <div class="col-3 ">
+              <div class="col-12">
+                <mat-slide-toggle ngModel formControlName="recomendado" color="primary">Recomendado por nutriologa</mat-slide-toggle>
+              </div>
+          </div>
 
 
-    <mat-checkbox
-      formControlName="recomendado"
-    >Recomendado por la nutria</mat-checkbox>
+          <!-- imagen  -->
+           <div class="col-12 grid-nogutter">
+             <button mat-button color="primary" (click)="fileUpload.click()">Seleccionar imagen</button>
+          </div>
 
-  </form>
+          <!-- Preview imagen -->
+          <div class="col-12 grid-nogutter">
+            <img [src]="imageUrl" (click)="fileUpload.click()" style="padding-left:5px; width: 65px; height: 65px; cursor: pointer;" />
+            <input #fileUpload hidden type="file" (change)="handleFileInput($event)" />
+          </div>
+
+        </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="col-12">
+    <div mat-dialog-actions >
+      <button mat-button mat-dialog-close >Cancelar</button>
+      <button mat-raised-button color="primary" [disabled]="!platilloForm.valid" cdkFocusInitial (click)="guardarPlatillo()" >Guardar</button>
+    </div>
+  </div>
 
 </div>
-<mat-divider></mat-divider>
-<div mat-dialog-actions >
-  <button mat-stroked-button (click)="cerrarModal()" >Cancelar</button>
-  <button mat-raised-button color="primary"  cdkFocusInitial (click)="guardarPlatillo()" >Continuar</button>
-</div>
+
 

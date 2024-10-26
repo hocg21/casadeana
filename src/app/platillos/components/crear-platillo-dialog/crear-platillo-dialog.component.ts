@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Platillo } from '../../../interfaces/menu-platillos.interface';
 import { MenuSemanalService } from '../../../services/menu-semanal.service';
@@ -7,7 +7,8 @@ import { MenuSemanalService } from '../../../services/menu-semanal.service';
 @Component({
   selector: 'app-crear-platillo-dialog',
   templateUrl: './crear-platillo-dialog.component.html',
-  styleUrls: ['./crear-platillo-dialog.component.css']
+  styleUrls: ['./crear-platillo-dialog.component.css'],
+
 })
 export class CrearPlatilloDialogComponent {
 
@@ -18,11 +19,12 @@ export class CrearPlatilloDialogComponent {
 
 
   public platilloForm = new FormGroup({
-    nombre: new FormControl<string>(''),
-    descripcion: new FormControl<string>(''),
-    precio: new FormControl<number>(0),
+    id: new FormControl<string>(''),
+    nombre: new FormControl<string>('', Validators.required),
+    descripcion: new FormControl<string>('', Validators.required),
     img: new FormControl<string>(''),
-    recomendado: new FormControl<boolean>(false)
+    recomendado: new FormControl<boolean>(false),
+    precio: new FormControl<any>('', Validators.required)
   });
 
   get currentPlatillo(): Platillo {
@@ -38,23 +40,44 @@ export class CrearPlatilloDialogComponent {
 
 
 
-  guardarPlatillo():void{
-    console.log({
-      formIsValid: this.platilloForm.valid,
-      value: this.platilloForm.value
+  async guardarPlatillo(){
+
+    if (!this.platilloForm.valid) { // Formulario invalido.
+      return;
+    }
+
+    const {nombre, descripcion, recomendado, precio } = this.platilloForm.value;
+    const datos = {
+      nombre, descripcion, precio, recomendado: Boolean(recomendado), img: ''
+    }
+
+    const platillo = await this.menuSemanalService.agregarPlatillo(datos).catch( error => {
+      console.log(error);
+      alert(error)
+      return null;
 
     });
 
-    const nuevo_platillo = this.menuSemanalService.agregarPlatillo(this.platilloForm.value);
+    if (platillo !== null) {
+      console.log(platillo.id);
+      this.cerrarModal();
+    }
 
-    nuevo_platillo.then((p)=>{
-      this.dialogRef.close();
-    });
+  }
 
-    this.dialogRef.afterClosed().subscribe(()=>{
-      window.location.reload();
-    })
+  public fileToUpload: any;
+  public imageUrl: any = './assets/images/no_image.png';
 
+  handleFileInput(event: Event) {
+    const target = event.target as HTMLInputElement;
+    this.fileToUpload = (target.files as FileList)[0];
+
+    //Show image preview
+    let reader = new FileReader();
+    reader.onload = (event: any) => {
+      this.imageUrl = event.target.result;
+    }
+    reader.readAsDataURL(this.fileToUpload);
   }
 
 }
