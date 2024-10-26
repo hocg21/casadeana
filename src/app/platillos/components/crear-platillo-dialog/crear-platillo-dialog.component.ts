@@ -16,14 +16,11 @@ export class CrearPlatilloDialogComponent {
     private menuSemanalService: MenuSemanalService
   ){}
 
-  public nuevo_platillo_id = '';
-  public agregar_imagen = false;
-  public img_link = '';
 
   public platilloForm = new FormGroup({
-    id: new FormControl<string>(''),
     nombre: new FormControl<string>(''),
     descripcion: new FormControl<string>(''),
+    precio: new FormControl<number>(0),
     img: new FormControl<string>(''),
     recomendado: new FormControl<boolean>(false)
   });
@@ -42,40 +39,22 @@ export class CrearPlatilloDialogComponent {
 
 
   guardarPlatillo():void{
-    // console.log({
-    //   formIsValid: this.platilloForm.valid,
-    //   value: this.platilloForm.value
+    console.log({
+      formIsValid: this.platilloForm.valid,
+      value: this.platilloForm.value
 
-    // });
+    });
 
-    // const nuevo_platillo = this.menuSemanalService.agregarPlatillo(this.platilloForm.value);
+    const nuevo_platillo = this.menuSemanalService.agregarPlatillo(this.platilloForm.value);
 
-    // nuevo_platillo.then((p)=>{
-    //   this.nuevo_platillo_id  = p.id;
-    //   this.agregar_imagen = true;
-    // });
+    nuevo_platillo.then((p)=>{
+      this.dialogRef.close();
+    });
 
-    this.agregar_imagen = true;
+    this.dialogRef.afterClosed().subscribe(()=>{
+      window.location.reload();
+    })
 
-  }
-
-  public fileToUpload: any;
-  public imageUrl: any;
-
-  handleFileInput(event: Event) {
-    const target = event.target as HTMLInputElement;
-    this.fileToUpload = (target.files as FileList)[0];
-
-    //Show image preview
-    let reader = new FileReader();
-    reader.onload = (event: any) => {
-      this.imageUrl = event.target.result;
-    }
-    reader.readAsDataURL(this.fileToUpload);
-  }
-
-  guardarImagen(){
-    console.log(this.nuevo_platillo_id )
   }
 
 }

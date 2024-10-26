@@ -6,10 +6,11 @@
 .dia {
   border: 1px solid #000;
 }
-
-.header-dia{
-  cursor: pointer;
+.dia-titulo{
+  position: absolute;
+  top:10px;
 }
+
 
 .recomendado{
   background-color:rgba(0, 128, 0, 0.432);

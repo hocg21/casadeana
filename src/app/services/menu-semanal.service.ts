@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FirebaseService } from './firebase.service';
-import { Platillo, PlatilloAsignacion } from '../interfaces/menu-platillos.interface';
+import { Platillo, PlatilloAsignacion, PlatilloAsignado } from '../interfaces/menu-platillos.interface';
 import { DocumentData, DocumentReference, DocumentSnapshot, QueryDocumentSnapshot } from 'firebase/firestore';
 
 @Injectable({
@@ -53,6 +53,7 @@ export class MenuSemanalService {
       id,
       nombre: data['nombre'],
       descripcion: data['descripcion'],
+      precio: data['precio'],
       recomendado: data['recomendado'],
       img: data['img']
     };
@@ -68,25 +69,29 @@ export class MenuSemanalService {
    */
   public async obtenerMenuDeSemana(semana:string, anio: string):Promise<PlatilloAsignacion[]>{
     /* Ruta a los platillos asignados.  */
-    console.log(`${this.coleccionMenuSemanal}/${semana}_${anio}/platillos`)
-    const platillosPath = `${this.coleccionMenuSemanal}/${semana}_${anio}/platillos`;
+    const platillosPath = `${this.coleccionMenuSemanal}/${semana}_${anio}/comidas_semana`;
     const documents = await this.firebaseService.getDocumentsCollection(platillosPath);
 
     const aux: {
       idAsignacion:string,
       diaIndex: number,
       precio: string,
-      platillo: DocumentReference
+      platillo: DocumentReference,
+      posicion: number
     }[] = [];
+
     /* Procesar documentos. */
     documents.forEach( async doc => {
+
       const idAsignacion = doc.id
       const data = doc.data();
+
       aux.push({
         idAsignacion,
         diaIndex: data['dia'],
         precio: data['precio'],
-        platillo: data['platilloRef']
+        platillo: data['platilloRef'],
+        posicion: data['posicion']
       });
     });
 
@@ -94,7 +99,7 @@ export class MenuSemanalService {
     aux.sort((a,b) => (a.diaIndex - b.diaIndex));
     const p: PlatilloAsignacion[] = await Promise.all(
       aux.map( async(e) => {
-        const { idAsignacion, diaIndex, precio } = e;
+        const { idAsignacion, diaIndex, precio, platillo: any, posicion,  } = e;
         const platillo = await this.firebaseService.getDocumentByReference(e.platillo);
         const dataPlatillo = platillo.data();
         const _aux_ = {
@@ -102,9 +107,10 @@ export class MenuSemanalService {
           nombre: dataPlatillo && dataPlatillo['nombre'] ? dataPlatillo['nombre'] : '',
           recomendado: dataPlatillo && dataPlatillo['recomendado'] ? dataPlatillo['recomendado'] : false,
           img: dataPlatillo && dataPlatillo['img'] ? dataPlatillo['img'] : '',
+          precio: dataPlatillo && dataPlatillo['precio'] ? dataPlatillo['precio'] : ''
         }
         return {
-          idAsignacion, diaIndex, precio, platillo: _aux_
+          idAsignacion, diaIndex, precio, platillo: _aux_, posicion
         }
       })
     );
@@ -117,6 +123,47 @@ export class MenuSemanalService {
     //addDocument puede regresar la info del platillo si se manda un tercer parametro siendo el id del platillo
     const new_platillo =  await this.firebaseService.addDocument(this.coleccionPlatillos, platillo)
     return new_platillo;
+
+  }
+
+  public async asignarPlatillos(data:PlatilloAsignado )
+  {
+    /*
+      primero es chechar si existe el documento de menu_semanal (30_2024)
+      si no pues crearlo, una vez creado hay que recorrer los platillos y ageragr 1 por 1 en
+      menu_semal/30_2024/comidas_semana/
+    */
+    // const semana_path = `${this.coleccionMenuSemanal}/${data.num_semana}/comidas_semana`;
+    const semana_path = `${this.coleccionMenuSemanal}`;
+    const comidas_semana_path = `${semana_path}/${data.num_semana}/comidas_semana`;
+
+    const platillos_semana = await this.firebaseService.getDocumentsCollection(comidas_semana_path);
+
+    for (const key in data.platillos) {
+      const element = data.platillos[key];
+
+      const platillo_a_asignar = {
+        dia : element.indice_dia,
+        posicion : parseInt(key, 10), //,10 es para que este en base 10
+        platilloRef :  await this.firebaseService.getDocumentReference(this.coleccionPlatillos, element.id)
+      };
+      console.log(platillo_a_asignar)
+      this.firebaseService.addDocument(comidas_semana_path, platillo_a_asignar);
+
+    }
+    this.firebaseService.addDocument(semana_path, {'fechaActualizacion': new Date()}, data.num_semana );
+
+  }
+
+  public async borrarPlatillosAsignados(num_semana:string, ids: string[])
+  {
+    ///menu_semanal/43_2024/comidas_semana/'
+    const collectionName = `${this.coleccionMenuSemanal}/${num_semana}/comidas_semana/`;
+
+    ids.forEach(id =>{
+      console.log(id)
+      this.firebaseService.deleteDocument(collectionName, id)
+    })
 
   }
 

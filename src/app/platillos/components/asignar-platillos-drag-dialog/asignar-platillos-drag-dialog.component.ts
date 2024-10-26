@@ -26,6 +26,7 @@ export class AsignarPlatillosDragDialogComponent {
 
   public platillos: Platillo [] = [];
   public platillosAsignados: Platillo [] = [];
+  public idsAsignados: string[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<AsignarPlatillosDragDialogComponent>,
@@ -35,16 +36,23 @@ export class AsignarPlatillosDragDialogComponent {
     this.data = data;
     this.platillos = data.platillos;
     this.platillosAsignados = data.platillosAsignados;
+    this.idsAsignados = data.idsAsignacion;
     console.log(data)
+
   }
 
-  public platillosSeleccionados :any = [];
+
+  public platillosPorAsignar: PlatilloAsignado = {num_semana: '', platillos: []};
+  public platillosAAsignar : PlatilloAAsignar[] = [];
 
   drop(event: CdkDragDrop<Platillo[]>){
 
-    if (event.previousContainer === event.container) {
+    if (event.previousContainer === event.container)
+    {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
+    }
+    else
+    {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -52,6 +60,18 @@ export class AsignarPlatillosDragDialogComponent {
         event.currentIndex,
       );
     }
+
+    this.platillosAAsignar = [];
+
+    console.log(event.container.data)
+
+    event.container.data.forEach(platillo => {
+      this.platillosAAsignar.push({
+        id: platillo.id,
+        indice_dia: this.data.indiceDia
+      })
+    });
+
   }
 
 
@@ -60,45 +80,32 @@ export class AsignarPlatillosDragDialogComponent {
   }
 
   cerrarModal():void{
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 
-  public platillosPorAsignar: PlatilloAsignado = {num_semana: '', platillos: []};
-  public platillosAAsignar : PlatilloAAsignar[] = [];
 
-  guardarPlatillos():void{
-    /*
-    {
-      num_semana: 23_2024,
-      platillos: [
-        {
-          indice_dia: 0
-          id: aasdasdfasd,
-        },
-         {
-          indice_dia: 0,
-          id:qwerqwerqwre,
-        }
-      ]
-    }
-    */
-   console.log(this.data)
-    this.platillosAsignados.forEach(platillo => {
-      this.platillosAAsignar.push({
-        id: platillo.id,
-        indice_dia: 0
-      })
-    });
+  async guardarPlatillos():Promise<void> {
 
+    // console.log(this.platillosAsignados)
+    this.platillosPorAsignar.platillos = [];
     this.platillosPorAsignar.num_semana = this.data.semana+'_'+this.data.anio;
     this.platillosPorAsignar.platillos = this.platillosAAsignar
 
-    console.log(this.platillosPorAsignar)
+    // console.log(this.platillosPorAsignar)
 
-    //this.menuSemanalService
-    this.menuSemanalService.agregarPlatillo(this.platillosPorAsignar);
+    await this.menuSemanalService.borrarPlatillosAsignados(this.platillosPorAsignar.num_semana, this.idsAsignados);
+    if(this.platillosAsignados.length > 0){
+      await this.menuSemanalService.asignarPlatillos(this.platillosPorAsignar).then((aver) =>
+        {
+
+        }
+      );
+    }
+    this.dialogRef.close();
 
 
   }
+
+
 
 }

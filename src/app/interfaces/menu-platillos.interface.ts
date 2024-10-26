@@ -2,6 +2,7 @@ export interface Platillo {
     id: string,
     nombre: string,
     descripcion?: string,
+    precio?: number,
     img: string,
     recomendado: boolean
 }
@@ -9,8 +10,8 @@ export interface Platillo {
 export interface PlatilloAsignacion {
     idAsignacion: string,
     diaIndex: number,
-    precio: string,
-    platillo: Platillo
+    platillo: Platillo,
+    posicion: number
 }
 
 

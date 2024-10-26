@@ -7,7 +7,7 @@
 <div mat-dialog-content>
 
   <form class="grid" [formGroup]="platilloForm" (ngSubmit)="guardarPlatillo()">
-    <span *ngIf="agregar_imagen !== true">
+
     <img [src]=" currentPlatillo | platilloImagen " class="rounded mx-auto d-block" style="max-width: 100%;" />
 
     <mat-form-field class="col-12">
@@ -28,22 +28,27 @@
         formControlName="descripcion"></textarea>
     </mat-form-field>
 
+    <mat-form-field class="col-12">
+      <mat-label>Precio</mat-label>
+      <input
+        matInput
+        required
+        type="number"
+        formControlName="precio"
+      />
+    </mat-form-field>
+
+
     <mat-checkbox
       formControlName="recomendado"
     >Recomendado por la nutria</mat-checkbox>
-    </span>
-    <span *ngIf="agregar_imagen === true" style="max-width: 500px;">
-      <input type="file" (change)="handleFileInput($event)" />
-      <img [src]="imageUrl" class="img-fluid" style="width: 100%;"  />
-    </span>
 
   </form>
 
 </div>
 <mat-divider></mat-divider>
 <div mat-dialog-actions >
-  <button mat-stroked-button  *ngIf="agregar_imagen !== true"(click)="cerrarModal()" >Cancelar</button>
-  <button mat-raised-button color="primary" *ngIf="agregar_imagen !== true"  cdkFocusInitial (click)="guardarPlatillo()" >Continuar</button>
-  <button mat-raised-button color="primary" *ngIf="agregar_imagen === true"  cdkFocusInitial (click)="guardarImagen()" >Guardar Imagen</button>
+  <button mat-stroked-button (click)="cerrarModal()" >Cancelar</button>
+  <button mat-raised-button color="primary"  cdkFocusInitial (click)="guardarPlatillo()" >Continuar</button>
 </div>
 

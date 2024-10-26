@@ -1,26 +1,50 @@
 
 <div>
+  <mat-form-field>
+    <mat-label>Seleccione semana</mat-label>
+    <mat-date-range-input  [formGroup]="semanaForm" [rangePicker]="picker" >
+      <input matStartDate formControlName="start" placeholder="Start date" #start>
+      <input matEndDate formControlName="end" placeholder="End date" #end
 
-  Semana #{{getWeekNumber() }} <br>
-  Del {{getRelativeDayInWeek(1) | date:'dd/MM/yyyy'}} al {{getRelativeDayInWeek(5) | date:'dd/MM/yyyy'}}
-
+      (dateChange)="getWeekNumber2(start, end)"
+      >
+    </mat-date-range-input>
+    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+  <br>
+  Semana #{{week_number}} <br>
+  Del {{semanaForm.value.start | date:'dd/MM/yyyy'}} al {{semanaForm.value.end | date:'dd/MM/yyyy'}}
 </div>
-<mat-grid-list cols="{{currentScreenSize == 'xsm' ? 1 : 5 }}" rowHeight="2:1" class="semana">
+<br>
+<mat-grid-list cols="{{currentScreenSize == 'xsm' ? 1 : 5 }}"  >
+  <mat-grid-tile *ngFor="let dia of week_days" class="" [class.mat-elevation-z2]="true">
+    <span class="dia-titulo">
 
-  <mat-grid-tile class="dia"  *ngFor="let dia of dias " >
-    <mat-grid-tile-header class="header-dia" (click)="asignarPlatillos(dia.diaIndex + 1)">
-      {{dia.nombre}} {{getRelativeDayInWeek(dia.diaIndex + 1 ) | date:'dd/MM/yyyy'}}
-    </mat-grid-tile-header>
+      <button mat-fab extended color="primary" (click)=" asignarPlatillos(dia) ">
+        <!-- <mat-icon>add</mat-icon> -->
+        <span class="header-dia" >
+          {{dia.nombre}} <br> {{dia.fecha | date: 'dd/MM/YYYY'}}
+        </span>
+      </button>
+
+    </span>
+
     <mat-list >
-      <mat-list-item *ngFor="let platillo of getPlatillosPorDia(dia.diaIndex )" >
+      <mat-list-item *ngFor="let platillo of getPlatillosPorDia(dia.diaIndex)"   >
         <img  matListItemAvatar src="{{platillo | platilloImagen}} " />
-      <div mat-line> {{platillo.nombre }}</div>
-    </mat-list-item>
-  </mat-list>
+        <mat-icon class="icon-recomendado"
+          *ngIf="platillo.recomendado === true"  >
+          eco
+        </mat-icon>
+        {{platillo.nombre }} - ${{platillo.precio}}
+      </mat-list-item>
+
+    </mat-list>
   </mat-grid-tile>
-
-
 </mat-grid-list>
+
 <br>
 <mat-divider></mat-divider>
 <br>

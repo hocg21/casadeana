@@ -2,22 +2,23 @@ import { environment } from "src/environments/environments";
 import { Injectable } from '@angular/core';
 import { FirebaseApp, initializeApp } from "firebase/app";
 import { Analytics, getAnalytics } from "firebase/analytics";
-import { 
-  getAuth, Auth, 
-  GoogleAuthProvider, 
-  signInWithRedirect, 
-  getRedirectResult, 
-  getAdditionalUserInfo, 
-  signInWithCredential, 
-  OAuthCredential, 
+import {
+  getAuth, Auth,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult,
+  getAdditionalUserInfo,
+  signInWithCredential,
+  OAuthCredential,
   signOut
 } from "firebase/auth";
-import { 
-  addDoc, collection, 
-  doc, DocumentReference, 
-  Firestore, getDoc, 
-  getDocs, getFirestore, 
-  setDoc, updateDoc 
+import {
+  addDoc, collection,
+  doc, DocumentReference,
+  Firestore, getDoc,
+  getDocs, getFirestore,
+  setDoc, updateDoc,
+  deleteDoc
 } from "firebase/firestore";
 
 @Injectable({
@@ -30,8 +31,8 @@ export class FirebaseService {
   auth: Auth;
   private googleAuthProvider: GoogleAuthProvider;
 
-  constructor() { 
-    this.app = initializeApp(environment.firebase);  
+  constructor() {
+    this.app = initializeApp(environment.firebase);
     this.analytics = getAnalytics(this.app);
     this.firestore = getFirestore(this.app);
     this.auth = getAuth(this.app);
@@ -44,14 +45,14 @@ export class FirebaseService {
 
   /**
    * Redirecciona para login con google.
-   *  
+   *
    * @author JHSS 2024-08-23 21:27:44
    */
   public signInGoogleWithRedirect():void{
     signInWithRedirect(this.auth, this.googleAuthProvider).
       catch(error => {
         console.log('signInError', error);
-        
+
       })
   }
 
@@ -64,20 +65,20 @@ export class FirebaseService {
 
 
   /**
-   * Obtiene la información del usuario al ingresar 
-   * con google. 
-   * 
+   * Obtiene la información del usuario al ingresar
+   * con google.
+   *
    * @author JHSS 2024-08-23 21:28:39
-   * @returns 
+   * @returns
    */
   public async getRedirectResult(){
     try {
-      const result = await getRedirectResult(this.auth) 
+      const result = await getRedirectResult(this.auth)
       if (result !== null) {
         const credential = GoogleAuthProvider.credentialFromResult(result);
         return {
           credential, user: result.user
-        };     
+        };
       }
     } catch (error:any) {
       // Handle Errors here.
@@ -92,15 +93,15 @@ export class FirebaseService {
         errorCode, errorMessage, email, credential
       });
     }
-    return null; 
+    return null;
   }
 
   /**
    * Inicia sesion en firebase con las credenciales del usuario
-   * logeado con google. 
-   * 
+   * logeado con google.
+   *
    * @author JHSS 2024-08-23 21:31:01
-   * @param credential 
+   * @param credential
    */
   public async signInToFirebase(credential: OAuthCredential){
     signInWithCredential(this.auth, credential)
@@ -119,7 +120,7 @@ export class FirebaseService {
         console.log({
           errorCode, errorMessage, email, credential
         });
-        
+
       });
 
   }
@@ -143,7 +144,7 @@ export class FirebaseService {
    * @param id Identificador de documento.
    * @returns
    */
-  private async getDocumentReference(collectionName: string, id: string){
+  public async getDocumentReference(collectionName: string, id: string){
     return doc(this.firestore, collectionName, id);
   }
 
@@ -158,7 +159,6 @@ export class FirebaseService {
    * @returns
    */
   public async addDocument(collectionName: string, data: any, documentId:string|undefined = undefined): Promise<DocumentReference>{
-
     if (documentId) { // Crear o sobreescribir uno existente por id.
       const documentReference = await this.getDocumentReference(collectionName, documentId);
       await setDoc( documentReference, data );
@@ -204,6 +204,17 @@ export class FirebaseService {
   public async getDocumentsCollection(collectionName: string){
     const collectionReference = await this.getCollectionReference(collectionName);
     return await getDocs( collectionReference );
+  }
+
+  /**
+   * Elimina el documento de una colección.
+   *
+   * @author HOCG 2024-10-23 10:36:07
+   * @param collectionName Nombre/Path de la colección.
+   * @param documentId
+   */
+  public async deleteDocument(collectionName: string, documentId: string){
+    await deleteDoc (doc(this.firestore, collectionName, documentId))
   }
 
 }
