@@ -13,6 +13,9 @@ export class ListItemPlatilloComponent implements OnInit {
   @Input()
   public platillos: Platillo[] = [];
 
+
+  url: Promise<string> | undefined;
+
   ngOnInit(): void {
     if(!this.platillos) throw Error('falta platilllo');
 

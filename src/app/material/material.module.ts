@@ -22,7 +22,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 
 @NgModule({
   imports:[
@@ -50,7 +50,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatExpansionModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatProgressSpinnerModule
   ]
 })
 export class MaterialModule { }

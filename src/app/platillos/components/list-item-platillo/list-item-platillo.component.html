@@ -1,6 +1,6 @@
 <mat-list>
   <mat-list-item *ngFor="let platillo of platillos">
-    <img  matListItemAvatar src="{{platillo | platilloImagen}} " />
+    <img  matListItemAvatar src="{{ platillo | platilloImagen | async }}" />
     <span matListItemTitle >
       <button   mat-icon-button class="icon-borrar"  (click)="abirBorrarPlatillo(platillo)">
         <mat-icon >delete</mat-icon>

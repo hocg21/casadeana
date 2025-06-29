@@ -52,8 +52,8 @@ export class ListPageComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     const semana = this.getWeekNumber();
-    const anio = this.getYear()
-    this.getPlatillosPorSemana(semana,anio)
+    const anio = this.getYear();
+    this.getPlatillosPorSemana(semana,anio);
   }
 
   public dias = [
@@ -87,7 +87,6 @@ export class ListPageComponent implements OnDestroy, OnInit {
     this.platillosService.obtenerMenuDeSemana(semana, anio)
       .then((data:PlatilloAsignacion[] )=>{
         this.platillosSemana = data;
-        console.log(data)
       })
   }
 
@@ -101,7 +100,12 @@ export class ListPageComponent implements OnDestroy, OnInit {
   }
 
   getPlatillosPorDia(dia: number){
-    this.platillosAsignados = this.platillosSemana.filter((platillo: PlatilloAsignacion ) => platillo.diaIndex === dia ).map(e=>e.platillo)
+    this.platillosAsignados = this.platillosSemana.filter((platillo: PlatilloAsignacion ) => platillo.diaIndex === dia )
+    .sort((a,b)=> (a.posicion - b.posicion))
+    .map((e)=>{
+      console.log(e)
+      return e.platillo
+    })
 
     return this.platillosAsignados;
   }
@@ -117,6 +121,8 @@ export class ListPageComponent implements OnDestroy, OnInit {
     const current_year = moment().format('YYYY');
     return current_year;
   }
+
+
 
 
 }

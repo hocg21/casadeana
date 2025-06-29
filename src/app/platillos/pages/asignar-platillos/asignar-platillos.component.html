@@ -5,19 +5,18 @@
     <mat-date-range-input  [formGroup]="semanaForm" [rangePicker]="picker" >
       <input matStartDate formControlName="start" placeholder="Start date" #start>
       <input matEndDate formControlName="end" placeholder="End date" #end
-
-      (dateChange)="getWeekNumber2(start, end)"
+      (dateChange)="getWeekNumberFromHTML(start, end)"
       >
     </mat-date-range-input>
-    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker></mat-date-range-picker>
   </mat-form-field>
   <br>
-  Semana #{{week_number}} <br>
-  Del {{semanaForm.value.start | date:'dd/MM/yyyy'}} al {{semanaForm.value.end | date:'dd/MM/yyyy'}}
+  <span *ngIf="selectedWeek">
+    Semana #{{week_number}} <br>
+    <!-- Del {{semanaForm.value.start | date:'dd/MM/yyyy'}} al {{semanaForm.value.end | date:'dd/MM/yyyy'}} -->
+  </span>
 </div>
-<br>
 <mat-grid-list cols="{{currentScreenSize == 'xsm' ? 1 : 5 }}"  >
   <mat-grid-tile *ngFor="let dia of week_days" class="" [class.mat-elevation-z2]="true">
     <span class="dia-titulo">
@@ -32,8 +31,9 @@
     </span>
 
     <mat-list >
+      <mat-spinner *ngIf="loading" ></mat-spinner>
       <mat-list-item *ngFor="let platillo of getPlatillosPorDia(dia.diaIndex)"   >
-        <img  matListItemAvatar src="{{platillo | platilloImagen}} " />
+        <img  matListItemAvatar src="{{platillo | platilloImagen | async }} " />
         <mat-icon class="icon-recomendado"
           *ngIf="platillo.recomendado === true"  >
           eco

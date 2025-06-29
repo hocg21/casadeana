@@ -13,7 +13,9 @@ const routes: Routes = [
     component: LayoutPageComponent,
     children: [
       { path:'nuevo-platillo', component:NewPageComponent },
-      { path:'asignar-platillos', component:AsignarPlatillosComponent,  canActivate: [ AuthGuard ], canMatch: [ AuthGuard ] },
+      { path:'asignar-platillos/:week', component:AsignarPlatillosComponent },
+    //  { path:'asignar-platillos', component:AsignarPlatillosComponent,  canActivate: [ AuthGuard ], canMatch: [ AuthGuard ] },
+    { path:'asignar-platillos', component:AsignarPlatillosComponent},
       { path: '', component: ListPageComponent},
       { path: '**', redirectTo: '' }
     ]

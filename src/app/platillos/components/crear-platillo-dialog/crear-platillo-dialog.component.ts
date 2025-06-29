@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Platillo } from '../../../interfaces/menu-platillos.interface';
@@ -35,7 +35,8 @@ export class CrearPlatilloDialogComponent {
 
 
   cerrarModal():void{
-    this.dialogRef.close()
+    this.dialogRef.close();
+
   }
 
 
@@ -47,11 +48,17 @@ export class CrearPlatilloDialogComponent {
     }
 
     const {nombre, descripcion, recomendado, precio } = this.platilloForm.value;
+
     const datos = {
-      nombre, descripcion, precio, recomendado: Boolean(recomendado), img: ''
+      nombre, descripcion, precio, recomendado: Boolean(recomendado), img: this.uploadesImageUrl
     }
 
-    const platillo = await this.menuSemanalService.agregarPlatillo(datos).catch( error => {
+    const platillo = await this.menuSemanalService.agregarPlatillo(datos)
+    .finally(()=>{
+      this.cerrarModal();
+      window.location.reload()
+    })
+    .catch( error => {
       console.log(error);
       alert(error)
       return null;
@@ -59,15 +66,41 @@ export class CrearPlatilloDialogComponent {
     });
 
     if (platillo !== null) {
-      console.log(platillo.id);
-      this.cerrarModal();
+
+      //const image = await this.menuSemanalService.cargarImagen(this.fileToUpload);
+
     }
 
   }
-
   public fileToUpload: any;
   public imageUrl: any = './assets/images/no_image.png';
+  public uploadesImageUrl = "";
 
+  async handleFileInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if(input.files){
+      this.fileToUpload = input.files[0];
+
+      let reader = new FileReader();
+      reader.onload = (event: any) => {
+        this.imageUrl = event.target.result;
+      }
+      reader.readAsDataURL(this.fileToUpload);
+
+      await this.menuSemanalService.cargarImagen(this.fileToUpload).then(res=>{
+        this.uploadesImageUrl =  res;
+      }).catch(error=>{
+        alert("No funcionó, márcale al Hugo")
+        return null;
+      });
+
+
+
+    }
+  }
+
+
+  /*
   handleFileInput(event: Event) {
     const target = event.target as HTMLInputElement;
     this.fileToUpload = (target.files as FileList)[0];
@@ -79,5 +112,6 @@ export class CrearPlatilloDialogComponent {
     }
     reader.readAsDataURL(this.fileToUpload);
   }
+    */
 
 }

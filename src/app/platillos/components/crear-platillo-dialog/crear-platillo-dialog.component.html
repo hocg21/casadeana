@@ -10,6 +10,12 @@
     <div mat-dialog-content>
         <form #platillo_Form class="grid grid-nogutter" [formGroup]="platilloForm" (ngSubmit)="guardarPlatillo()">
 
+          <!-- Preview imagen -->
+          <div class="col-12 grid-nogutter">
+            <img [src]="imageUrl" (click)="fileUpload.click()" style="padding-left:5px; width: 65px; height: 65px; cursor: pointer;" />
+            <input #fileUpload hidden type="file" (change)="handleFileInput($event)" />
+          </div>
+
           <!-- Nombre -->
           <div class="col-12 grid-nogutter">
             <mat-form-field class="col-12">
@@ -39,21 +45,15 @@
           <!-- Recomendado. -->
           <div class="col-3 ">
               <div class="col-12">
-                <mat-slide-toggle ngModel formControlName="recomendado" color="primary">Recomendado por nutriologa</mat-slide-toggle>
+                <mat-slide-toggle ngModel formControlName="recomendado" color="primary">Recomendado por nutri&oacute;loga</mat-slide-toggle>
               </div>
           </div>
 
 
           <!-- imagen  -->
-           <div class="col-12 grid-nogutter">
+           <!-- <div class="col-12 grid-nogutter">
              <button mat-button color="primary" (click)="fileUpload.click()">Seleccionar imagen</button>
-          </div>
-
-          <!-- Preview imagen -->
-          <div class="col-12 grid-nogutter">
-            <img [src]="imageUrl" (click)="fileUpload.click()" style="padding-left:5px; width: 65px; height: 65px; cursor: pointer;" />
-            <input #fileUpload hidden type="file" (change)="handleFileInput($event)" />
-          </div>
+          </div> -->
 
         </form>
     </div>

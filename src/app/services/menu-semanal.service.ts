@@ -105,6 +105,7 @@ export class MenuSemanalService {
         const _aux_ = {
           id: platillo.id,
           nombre: dataPlatillo && dataPlatillo['nombre'] ? dataPlatillo['nombre'] : '',
+          descripcion: dataPlatillo && dataPlatillo['descripcion'] ? dataPlatillo['descripcion'] : '',
           recomendado: dataPlatillo && dataPlatillo['recomendado'] ? dataPlatillo['recomendado'] : false,
           img: dataPlatillo && dataPlatillo['img'] ? dataPlatillo['img'] : '',
           precio: dataPlatillo && dataPlatillo['precio'] ? dataPlatillo['precio'] : ''
@@ -157,10 +158,28 @@ export class MenuSemanalService {
     const collectionName = `${this.coleccionMenuSemanal}/${num_semana}/comidas_semana/`;
 
     ids.forEach(id =>{
-      console.log(id)
-      this.firebaseService.deleteDocument(collectionName, id)
+      this.firebaseService.deleteDocument(collectionName, id);
     })
 
   }
+
+  public async borrarPlatillo(id: string, imageRef: string)
+  {
+    const collectionName = `${this.coleccionPlatillos}/`
+
+    this.firebaseService.deleteDocument(collectionName, id);
+    this.firebaseService.deleteImage(imageRef);
+
+  }
+
+  public cargarImagen(imagen: any){
+    const aver =  this.firebaseService.uploadImage(imagen);
+    return aver;
+  }
+
+  public elimiarImagen(imageRef: string){
+    this.firebaseService.deleteImage(imageRef);
+  }
+
 
 }

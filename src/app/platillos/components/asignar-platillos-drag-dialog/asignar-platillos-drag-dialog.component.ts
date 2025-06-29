@@ -1,9 +1,8 @@
-import { Component, Inject, NgModule, ViewChild } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { Platillo, PlatilloAAsignar, PlatilloAsignado } from 'src/app/interfaces/menu-platillos.interface';
 import { MenuSemanalService } from '../../../services/menu-semanal.service';
-import {NgFor} from '@angular/common';
 
 import {
   CdkDrag,
@@ -74,6 +73,10 @@ export class AsignarPlatillosDragDialogComponent {
 
   }
 
+  myf(d:any){
+    this.data = d;
+  }
+
 
   onNoClick():void {
     this.dialogRef.close(false);
@@ -97,7 +100,7 @@ export class AsignarPlatillosDragDialogComponent {
     if(this.platillosAsignados.length > 0){
       await this.menuSemanalService.asignarPlatillos(this.platillosPorAsignar).then((aver) =>
         {
-
+          console.log(aver)
         }
       );
     }

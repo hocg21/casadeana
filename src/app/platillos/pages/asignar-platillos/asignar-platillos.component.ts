@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, OnDestroy, OnInit, inject } from '@angular/core';
-import { BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Breakpoints} from '@angular/cdk/layout';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog'
 import { Platillo, PlatilloAsignacion } from 'src/app/interfaces/menu-platillos.interface';
 import { MenuSemanalService } from 'src/app/services/menu-semanal.service';
@@ -10,7 +9,7 @@ import { CrearPlatilloDialogComponent } from '../../components/crear-platillo-di
 import * as moment from 'moment';
 import { BorrarPlatilloDialogComponent } from '../../components/borrar-platillo-dialog/borrar-platillo-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
-import {MatDatepickerInputEvent} from '@angular/material/datepicker';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-asignar-platillos',
@@ -31,24 +30,10 @@ export class AsignarPlatillosComponent  implements OnDestroy, OnInit {
 
    constructor(
     private dialog: MatDialog,
-    private platillosService: MenuSemanalService
+    private platillosService: MenuSemanalService,
+    private router: Router,
   ) {
-    inject(BreakpointObserver)
-      .observe([
-        Breakpoints.XSmall,
-        Breakpoints.Small,
-        Breakpoints.Medium,
-        Breakpoints.Large,
-        Breakpoints.XLarge,
-      ])
-      .pipe(takeUntil(this.destroyed))
-      .subscribe(result => {
-        for (const query of Object.keys(result.breakpoints)) {
-          if (result.breakpoints[query]) {
-            this.currentScreenSize = this.displayNameMap.get(query) ?? 'Unknown';
-          }
-        }
-      });
+
   }
 
 
@@ -57,16 +42,56 @@ export class AsignarPlatillosComponent  implements OnDestroy, OnInit {
     this.destroyed.complete();
   }
 
-  ngOnInit(): void {
+  private route = inject(ActivatedRoute);
 
-    this.platillosService.catalogoDePlatillos()
-      .then((data : Platillo[])=>{
-        // console.log(data)
-        this.platillos = JSON.parse(JSON.stringify(data));;
-        this.platillosAAsignar = JSON.parse(JSON.stringify(data));
+
+  public loading: boolean = true;
+
+  ngOnInit(): void {
+    this.loading = true;
+    this.route.paramMap.subscribe((params)=>{
+      this.aver(params.get('week')!);
     })
 
 
+    this.platillosService.catalogoDePlatillos()
+    .then((data : Platillo[])=>{
+      // console.log(data)
+      this.platillos = JSON.parse(JSON.stringify(data));;
+      this.platillosAAsignar = JSON.parse(JSON.stringify(data));
+
+      this.loading = false;
+    });
+  }
+
+  async aver(week: string){
+    this.week_number = week;
+
+    if(this.week_number !== null)
+    {
+      const w = parseInt(this.week_number.split('_')[0]);
+      const y = parseInt(this.week_number.split('_')[1]);
+
+      const date = new Date(y, 0, (1 + (w -1) * 7 ));
+      date.setDate(date.getDate() + (1 - date.getDay()));
+
+      const dia_lunes = new Date(date).getDate();
+      const mes_lunes = new Date(date).getMonth()+1;
+
+      const dia_viernes = new Date(date).getDate()+4;
+      const mes_viernes = new Date(date).getMonth()+1;
+
+      const start = `${mes_lunes}/${dia_lunes}/${y}`;
+      const end = `${mes_viernes}/${dia_viernes}/${y}`;
+
+
+      this.semanaForm.setValue({
+        start: new Date( start ),
+        end : new Date(end)
+      })
+      await this.getWeekNumber2(start, end);
+
+    }
   }
 
   public dias = [
@@ -106,6 +131,8 @@ export class AsignarPlatillosComponent  implements OnDestroy, OnInit {
   public platillosAAsignar: Platillo[] = [];
 
   public idsAsignacion: String[] = [];
+
+  public selectedWeek: boolean = false;
 
   getPlatillosPorSemana(semana: string, anio:string){
 
@@ -161,15 +188,15 @@ export class AsignarPlatillosComponent  implements OnDestroy, OnInit {
         dia: dia.diaIndex + 1,
         indiceDia: dia.diaIndex,
         anio: this.getYear(),
-        semana: this.getWeekNumber(),
+        semana: this.week_number,
         platillosAsignados: this.getPlatillosPorDia(dia.diaIndex),
         platillos: this.getPlatillosAAsignar(this.platillosAAsignar, this.platillosTest),
-        idsAsignacion: this.getIdsAsignacioPorDia(dia.diaIndex)
+        idsAsignacion: this.getIdsAsignacioPorDia(dia.diaIndex),
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
+      window.location.reload();
     });
 
   }
@@ -188,38 +215,37 @@ export class AsignarPlatillosComponent  implements OnDestroy, OnInit {
     })
   }
 
-  getRelativeDayInWeek = (dy:number):Date  =>  {
-    const d = new Date();
-    const offset = d.getDay() - dy;
-    const d2 = new Date(d);
-    d.setDate(d.getDate()-offset)
-    return  d
-  }
-
-  getWeekNumber = ():string =>{
-    const now = new Date();
-    let onejan = new Date(now.getFullYear(), 0, 1);
-    let week = Math.ceil((((now.getTime() - onejan.getTime()) / 86400000) + onejan.getDay() + 1) / 7);
-    return week.toString();
-  }
-
   public week_number = "";
-  getWeekNumber2 = (start: HTMLInputElement, end: HTMLInputElement) =>{
+  public current_year = "";
+  async getWeekNumber2 (start: any, end: any)
+  {
 
-    let date1 = new Date(start.value)
+    let date1 = new Date(start)
 
-    if(start.value !== null)
+    if(end !== null)
     {
       let onejan = new Date(date1.getFullYear(), 0, 1);
       let week = Math.ceil((((date1.getTime() - onejan.getTime()) / 86400000) + onejan.getDay() + 1) / 7);
 
       this.getPlatillosPorSemana(week.toString(),this.getYear())
 
-      this.week_number = week.toString()
+      this.week_number = week.toString();
+      this.current_year = date1.getFullYear().toString();
 
-      this.getDaysOfWeek(start.value, end.value)
+      this.getDaysOfWeek(start, end);
+
+      this.selectedWeek = true;
     }
 
+  }
+
+  getWeekNumberFromHTML(start: HTMLInputElement , end: HTMLInputElement)
+  {
+    this.getWeekNumber2(start.value, end.value).then(()=>{
+      this.router.navigateByUrl(`/asignar-platillos/${this.week_number}_${this.current_year}`).then(()=>{
+          window.location.reload()
+      })
+    });
   }
 
   public week_days:any = [];

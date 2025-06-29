@@ -10,18 +10,38 @@
     </mat-panel-description>
 
     <div class="container responsive-grid" >
+      <!--
       <mat-card class="platillo-card" *ngFor="let platillo of getPlatillosPorDia(dia.diaIndex)" >
         <mat-card-header class="platillo-header-image"  >
           <div mat-card-avatar class="platillo-header-image"
           style="background-image: url('{{ platillo | recomendadoImagen  }}') ;"
           ></div>
-          <mat-card-title>{{ platillo.nombre }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ platillo.nombre }}
+            <span *ngIf="platillo.recomendado"><br>(recomendado por la nutriologa)
+            </span>
+          </mat-card-subtitle>
         </mat-card-header>
-        <img class="img-card" mat-card-image src="{{platillo | platilloImagen}} " />
+        <img class="img-card" mat-card-image [src]=" platillo | platilloImagen | async " />
         <mat-card-content>
-          {{ platillo.descripcion }}
+          <p>{{ platillo.descripcion }}</p>
+          <p>Precio: ${{platillo.precio}}</p>
         </mat-card-content>
       </mat-card>
+    -->
+    <mat-card elevated-container-color   *ngFor="let platillo of getPlatillosPorDia(dia.diaIndex)">
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>{{ platillo.nombre }}</mat-card-title>
+          <!-- <mat-card-subtitle>Large</mat-card-subtitle> -->
+          <img mat-card-sm-image [src]=" platillo | platilloImagen | async " >
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ platillo.descripcion }}</p>
+        <p>Precio: ${{platillo.precio}}</p>
+      </mat-card-content>
+    </mat-card>
     </div>
 
   </mat-expansion-panel>

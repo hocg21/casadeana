@@ -14,7 +14,7 @@
       class="platillos-list"
       (cdkDropListDropped)="drop($event)">
         <div class="platillo-box" *ngFor="let platillo of platillosAsignados" cdkDrag>
-          <img class="preview-platillo" src="{{platillo | platilloImagen}} " />
+          <img class="preview-platillo" src="{{platillo | platilloImagen | async }} " />
           <mat-icon
             class="icon-recomendado"
             *ngIf="platillo.recomendado === true"  >
@@ -35,7 +35,7 @@
         class="platillos-list"
         (cdkDropListDropped)="drop($event)">
         <div class="platillo-box"  *ngFor="let platillo of platillos" cdkDrag>
-          <img class="preview-platillo" src="{{platillo | platilloImagen}} " />
+          <img class="preview-platillo" src="{{platillo | platilloImagen | async}} " />
           <mat-icon
             class="icon-recomendado"
             *ngIf="platillo.recomendado === true"  >

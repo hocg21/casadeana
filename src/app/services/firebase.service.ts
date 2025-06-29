@@ -20,6 +20,8 @@ import {
   setDoc, updateDoc,
   deleteDoc
 } from "firebase/firestore";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
+
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +44,7 @@ export class FirebaseService {
   public currentUser(){
     return this.auth.currentUser;
   }
-  
+
   public loggedInUser():boolean{
     return this.auth.currentUser !== null;
   }
@@ -219,6 +221,44 @@ export class FirebaseService {
    */
   public async deleteDocument(collectionName: string, documentId: string){
     await deleteDoc (doc(this.firestore, collectionName, documentId))
+  }
+
+  /**
+   * Carga imagen a firebase storage
+   *
+   * @author HOCG 2025-04-04 10:36:07
+   * @param image archivo a subir
+   */
+  public async uploadImage(image: any){
+    const storage = getStorage();
+    const storageRef = ref(storage, `/platillos/${image.name}`);
+    const task = await uploadBytesResumable(storageRef, image );
+
+    return `/platillos/${image.name}`;
+
+    /*
+    task.on('state_changed', function(snapshot){
+      var percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+    })
+      */
+  }
+
+  /**
+   * Eliminar imagen de firebase storage
+   *
+   * @author HOCG 2025-04-04 10:36:07
+   * @param image archivo a subir
+   * @param documentId
+   */
+  public async deleteImage(imageRef: string){
+    const storage = getStorage();
+    const storageRef = ref(storage, imageRef);
+
+    deleteObject(storageRef).then(()=>{
+      //return "archivo eliminado";
+    }).catch((error)=>{
+      //return "error al eliminar archivo";
+    })
   }
 
 }

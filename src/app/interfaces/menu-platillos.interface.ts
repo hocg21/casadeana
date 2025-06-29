@@ -1,9 +1,12 @@
+import { Observable } from "rxjs"
+
 export interface Platillo {
     id: string,
     nombre: string,
     descripcion?: string,
     precio?: number,
     img: string,
+    url?: Observable <any>,
     recomendado: boolean
 }
 
