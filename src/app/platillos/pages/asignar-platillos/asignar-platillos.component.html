@@ -12,38 +12,51 @@
     <mat-date-range-picker #picker></mat-date-range-picker>
   </mat-form-field>
   <br>
-  <span *ngIf="selectedWeek">
-    Semana #{{week_number}} <br>
-    <!-- Del {{semanaForm.value.start | date:'dd/MM/yyyy'}} al {{semanaForm.value.end | date:'dd/MM/yyyy'}} -->
-  </span>
-</div>
-<!-- <mat-grid-list cols="{{currentScreenSize == 'xsm' ? 1 : 5 }}"  >
-  <mat-grid-tile *ngFor="let dia of week_days" class="" [class.mat-elevation-z2]="true">
-    <span class="dia-titulo">
-
-      <button mat-fab extended color="primary" (click)=" asignarPlatillos(dia) ">
-        <mat-icon>add</mat-icon>
-        <span class="header-dia" >
-          {{dia.nombre}} <br> {{dia.fecha | date: 'dd/MM/YYYY'}}
-        </span>
-      </button>
-
+  @if(selectedWeek)
+  {
+    <span  >
+      Semana #{{week_number}} <br>
+      <!-- Del {{semanaForm.value.start | date:'dd/MM/yyyy'}} al {{semanaForm.value.end | date:'dd/MM/yyyy'}} -->
     </span>
+  }
+</div>
+<mat-grid-list cols="{{currentScreenSize == 'xsm' ? 1 : 5 }}"  >
+  @for(dia of week_days; track dia )
+  {
+    <mat-grid-tile  class="" [class.mat-elevation-z2]="true">
+      <span class="dia-titulo">
 
-    <mat-list >
-      <mat-spinner *ngIf="loading" ></mat-spinner>
-      <mat-list-item *ngFor="let platillo of getPlatillosPorDia(dia.diaIndex)"   >
-        <img  matListItemAvatar src="{{platillo | platilloImagen | async }} " />
-        <mat-icon class="icon-recomendado"
-          *ngIf="platillo.recomendado === true"  >
-          eco
-        </mat-icon>
-        {{platillo.nombre }} - ${{platillo.precio}}
-      </mat-list-item>
+        <button mat-fab extended color="primary" (click)=" asignarPlatillos(dia) ">
+          <mat-icon>add</mat-icon>
+          <span class="header-dia" >
+            {{dia.nombre}} <br> {{dia.fecha }}
+          </span>
+        </button>
 
-    </mat-list>
-  </mat-grid-tile>
-</mat-grid-list> -->
+      </span>
+
+      <mat-list >
+        <mat-spinner *ngIf="loading" ></mat-spinner>
+        @for(  platillo of getPlatillosPorDia(dia.diaIndex); track platillo)
+        {
+          <mat-list-item >
+            <img  matListItemAvatar src="{{platillo | platilloImagen | async }} " />
+            @if(platillo.recomendado === true)
+            {
+              <mat-icon class="icon-recomendado" >
+                eco
+              </mat-icon>
+            }
+            {{platillo.nombre }} - ${{platillo.precio}}
+          </mat-list-item>
+
+        }
+
+      </mat-list>
+    </mat-grid-tile>
+
+  }
+</mat-grid-list>
 
 <br>
 <mat-divider></mat-divider>

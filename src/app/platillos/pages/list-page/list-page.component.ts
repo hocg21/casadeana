@@ -7,13 +7,14 @@ import { MenuSemanalService } from 'src/app/services/menu-semanal.service';
 import { PlatilloImagenPipe } from '../../pipes/platillo-imagen.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { NgFor, AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-list-page',
     templateUrl: './list-page.component.html',
     styleUrls: ['./list-page.component.css'],
-    imports: [NgFor, MatExpansionModule, MatCardModule, AsyncPipe, DatePipe, PlatilloImagenPipe]
+    standalone:true,
+    imports: [MatExpansionModule, MatCardModule, AsyncPipe, DatePipe, PlatilloImagenPipe]
 })
 export class ListPageComponent implements OnDestroy, OnInit {
   destroyed = new Subject<void>();
@@ -123,7 +124,7 @@ export class ListPageComponent implements OnDestroy, OnInit {
   }
 
   getYear = (): string => {
-    const current_year = moment().format('YYYY');
+    const current_year = "2025"//moment().format('YYYY');
     return current_year;
   }
 

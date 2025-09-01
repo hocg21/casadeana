@@ -7,6 +7,7 @@ registerLocaleData(localeMx)
 
 @Component({
     selector: 'app-root',
+    standalone:true,
     imports: [RouterOutlet],
     templateUrl: './app.html',
     styleUrls: ['./app.css'],

@@ -5,10 +5,11 @@
   <span class="spacer"></span>
 
   <!-- <span>{{ user?.username }}</span> -->
-
-  <button mat-button (click)="onLogout()" *ngIf="user != undefined" >
-    Salir
-  </button>
+  @if( user != undefined ){
+    <button mat-button (click)="onLogout()" >
+      Salir
+    </button>
+  }
 
 </mat-toolbar>
 

@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-login-page',
     templateUrl: './login-page.component.html',
     styles: [],
+    standalone:true,
     imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, ReactiveFormsModule]
 })
 export class LoginPageComponent implements OnInit, OnDestroy{

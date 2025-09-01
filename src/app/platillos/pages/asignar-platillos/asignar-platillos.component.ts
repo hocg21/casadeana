@@ -18,16 +18,19 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
-import { NgIf, NgFor, AsyncPipe, DatePipe } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatNativeDateModule } from '@angular/material/core';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-asignar-platillos',
     templateUrl: './asignar-platillos.component.html',
     styleUrls: ['./asignar-platillos.component.css'],
-    imports: [MatFormFieldModule, MatNativeDateModule, MatDatepickerModule, FormsModule, ReactiveFormsModule, NgIf, MatGridListModule, NgFor, MatButtonModule, MatListModule, MatProgressSpinnerModule, MatIconModule, MatDividerModule, ListItemPlatilloComponent, AsyncPipe, DatePipe, PlatilloImagenPipe]
+    standalone:true,
+    imports: [MatFormFieldModule, MatNativeDateModule, MatDatepickerModule, FormsModule, ReactiveFormsModule,  MatGridListModule,
+       MatButtonModule, MatListModule, MatProgressSpinnerModule, MatIconModule, MatDividerModule,
+       ListItemPlatilloComponent,  PlatilloImagenPipe, AsyncPipe]
 })
 export class AsignarPlatillosComponent  implements OnDestroy, OnInit {
   destroyed = new Subject<void>();
@@ -282,7 +285,7 @@ export class AsignarPlatillosComponent  implements OnDestroy, OnInit {
   }
 
   getYear = (): string => {
-    const current_year = moment().format('YYYY');
+    const current_year = "2025" //moment().format('YYYY');
     return current_year;
   }
 

@@ -3,14 +3,14 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 import { User } from 'src/app/auth/interfaces/user.interface';
 import { Router, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
     selector: 'app-layout-page',
     templateUrl: './layout-page.component.html',
     styles: [],
-    imports: [MatToolbarModule, NgIf, MatButtonModule, RouterOutlet]
+    standalone:true,
+    imports: [MatToolbarModule, MatButtonModule, RouterOutlet]
 })
 export class LayoutPageComponent {
 
@@ -25,7 +25,7 @@ export class LayoutPageComponent {
   }
 
   onLogout(){
-    
+
     // this.authService.logout();
     // this.router.navigate(['/'])
   }

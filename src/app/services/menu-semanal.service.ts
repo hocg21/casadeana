@@ -25,9 +25,8 @@ export class MenuSemanalService {
   public async catalogoDePlatillos(){
       const documentos = await this.firebaseService.getDocumentsCollection(this.coleccionPlatillos);
       const platillos: Platillo[] = [];
-
       /* Procesar documentos. */
-      documentos.forEach( doc => {
+      documentos.forEach( (doc:any) => {
         const p = this.extraerDatosPlatillo(doc);
         platillos.push(p);
       });

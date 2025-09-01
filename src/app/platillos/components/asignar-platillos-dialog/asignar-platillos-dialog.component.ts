@@ -4,14 +4,14 @@ import { MatSelectionList, MatSelectionListChange, MatListModule } from '@angula
 import { Platillo } from 'src/app/interfaces/menu-platillos.interface';
 import { MenuSemanalService } from 'src/app/services/menu-semanal.service';
 import { MatButtonModule } from '@angular/material/button';
-import { NgFor, DatePipe } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
     selector: 'app-asignar-platillos-dialog',
     templateUrl: './asignar-platillos-dialog.component.html',
     styleUrls: ['./asignar-platillos-dialog.component.css'],
-    imports: [MatDialogModule, MatDividerModule, MatListModule, NgFor, MatButtonModule, DatePipe]
+    standalone:true,
+    imports: [MatDialogModule, MatDividerModule, MatListModule,  MatButtonModule  ]
 })
 export class AsignarPlatillosDialogComponent {
 

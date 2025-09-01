@@ -1,17 +1,23 @@
 <mat-list>
-  <mat-list-item *ngFor="let platillo of platillos">
-    <img  matListItemAvatar src="{{ platillo | platilloImagen | async }}" />
-    <span matListItemTitle >
-      <button   mat-icon-button class="icon-borrar"  (click)="abirBorrarPlatillo(platillo)">
-        <mat-icon >delete</mat-icon>
-      </button>
-      <mat-icon class="icon-recomendado"
-        *ngIf="platillo.recomendado === true"  >
-        eco
-      </mat-icon>
-    {{platillo.nombre}} - ${{platillo.precio}}
-    </span>
-  <span matListItemLine  >{{platillo.descripcion}}</span>
+  @for( platillo of platillos; track platillo)
+  {
+    <mat-list-item  >
+      <img  matListItemAvatar src="{{ platillo | platilloImagen | async }}" />
+      <span matListItemTitle >
+        <button   mat-icon-button class="icon-borrar"  (click)="abirBorrarPlatillo(platillo)">
+          <mat-icon >delete</mat-icon>
+        </button>
+        @if(platillo.recomendado === true)
+        {
+          <mat-icon class="icon-recomendado" >
+            eco
+          </mat-icon>
+        }
+      {{platillo.nombre}} - ${{platillo.precio}}
+      </span>
+    <span matListItemLine  >{{platillo.descripcion}}</span>
 
-  </mat-list-item>
+    </mat-list-item>
+
+  }
 </mat-list>
