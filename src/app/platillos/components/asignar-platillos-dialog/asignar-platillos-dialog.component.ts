@@ -11,7 +11,6 @@ import { MatDividerModule } from '@angular/material/divider';
     selector: 'app-asignar-platillos-dialog',
     templateUrl: './asignar-platillos-dialog.component.html',
     styleUrls: ['./asignar-platillos-dialog.component.css'],
-    standalone: true,
     imports: [MatDialogModule, MatDividerModule, MatListModule, NgFor, MatButtonModule, DatePipe]
 })
 export class AsignarPlatillosDialogComponent {

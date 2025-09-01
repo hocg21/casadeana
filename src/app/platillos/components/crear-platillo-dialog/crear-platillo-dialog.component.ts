@@ -12,7 +12,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     selector: 'app-crear-platillo-dialog',
     templateUrl: './crear-platillo-dialog.component.html',
     styleUrls: ['./crear-platillo-dialog.component.css'],
-    standalone: true,
     imports: [
         MatDialogModule,
         FormsModule,
@@ -21,7 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         MatInputModule,
         MatSlideToggleModule,
         MatButtonModule,
-    ],
+    ]
 })
 export class CrearPlatilloDialogComponent {
 

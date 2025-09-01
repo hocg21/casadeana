@@ -13,7 +13,6 @@ import { NgFor, AsyncPipe, DatePipe } from '@angular/common';
     selector: 'app-list-page',
     templateUrl: './list-page.component.html',
     styleUrls: ['./list-page.component.css'],
-    standalone: true,
     imports: [NgFor, MatExpansionModule, MatCardModule, AsyncPipe, DatePipe, PlatilloImagenPipe]
 })
 export class ListPageComponent implements OnDestroy, OnInit {

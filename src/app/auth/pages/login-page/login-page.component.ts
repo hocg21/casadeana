@@ -10,12 +10,10 @@ import { FirebaseService } from '../../../services/firebase.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-login-page',
-  templateUrl: './login-page.component.html',
-  styles: [
-  ],
-  standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule,  ReactiveFormsModule ],
+    selector: 'app-login-page',
+    templateUrl: './login-page.component.html',
+    styles: [],
+    imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, ReactiveFormsModule]
 })
 export class LoginPageComponent implements OnInit, OnDestroy{
 

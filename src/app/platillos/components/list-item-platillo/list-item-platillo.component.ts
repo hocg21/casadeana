@@ -12,7 +12,6 @@ import { MatListModule } from '@angular/material/list';
     selector: 'list-item-platillo',
     templateUrl: './list-item-platillo.component.html',
     styleUrls: ['./list-item-platillo.component.css'],
-    standalone: true,
     imports: [MatListModule, NgFor, MatButtonModule, MatIconModule, NgIf, AsyncPipe, PlatilloImagenPipe]
 })
 export class ListItemPlatilloComponent implements OnInit {

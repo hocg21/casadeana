@@ -24,7 +24,6 @@ import { MatDividerModule } from '@angular/material/divider';
     selector: 'app-asignar-platillos-drag-dialog',
     templateUrl: './asignar-platillos-drag-dialog.component.html',
     styleUrls: ['./asignar-platillos-drag-dialog.component.css'],
-    standalone: true,
     imports: [MatDialogModule, MatDividerModule, CdkDropListGroup, CdkDropList, NgFor, CdkDrag, NgIf, MatIconModule, MatButtonModule, AsyncPipe, DatePipe, PlatilloImagenPipe]
 })
 export class AsignarPlatillosDragDialogComponent {

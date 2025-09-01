@@ -6,14 +6,13 @@ import { MatIconRegistry } from '@angular/material/icon';
 registerLocaleData(localeMx)
 
 @Component({
-  selector: 'app-root',
-  standalone:true,
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrls: ['./app.css'],
-  providers:[
-    {provide: LOCALE_ID, useValue:'es-MX' }
-  ]
+    selector: 'app-root',
+    imports: [RouterOutlet],
+    templateUrl: './app.html',
+    styleUrls: ['./app.css'],
+    providers: [
+        { provide: LOCALE_ID, useValue: 'es-MX' }
+    ]
 },)
 export class App implements OnInit{
   private iconRegistry = inject(MatIconRegistry);

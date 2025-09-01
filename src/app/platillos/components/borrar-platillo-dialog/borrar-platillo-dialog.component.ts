@@ -9,7 +9,6 @@ import { MatDividerModule } from '@angular/material/divider';
     selector: 'app-borrar-platillo-dialog',
     templateUrl: './borrar-platillo-dialog.component.html',
     styleUrls: ['./borrar-platillo-dialog.component.css'],
-    standalone: true,
     imports: [MatDialogModule, MatDividerModule, MatButtonModule, JsonPipe]
 })
 export class BorrarPlatilloDialogComponent {

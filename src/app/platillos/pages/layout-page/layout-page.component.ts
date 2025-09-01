@@ -10,7 +10,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     selector: 'app-layout-page',
     templateUrl: './layout-page.component.html',
     styles: [],
-    standalone: true,
     imports: [MatToolbarModule, NgIf, MatButtonModule, RouterOutlet]
 })
 export class LayoutPageComponent {

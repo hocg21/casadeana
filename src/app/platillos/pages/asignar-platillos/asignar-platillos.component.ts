@@ -27,7 +27,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     selector: 'app-asignar-platillos',
     templateUrl: './asignar-platillos.component.html',
     styleUrls: ['./asignar-platillos.component.css'],
-    standalone: true,
     imports: [MatFormFieldModule, MatNativeDateModule, MatDatepickerModule, FormsModule, ReactiveFormsModule, NgIf, MatGridListModule, NgFor, MatButtonModule, MatListModule, MatProgressSpinnerModule, MatIconModule, MatDividerModule, ListItemPlatilloComponent, AsyncPipe, DatePipe, PlatilloImagenPipe]
 })
 export class AsignarPlatillosComponent  implements OnDestroy, OnInit {
