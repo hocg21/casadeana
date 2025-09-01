@@ -1,14 +1,27 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { Platillo } from '../../../interfaces/menu-platillos.interface';
 import { MenuSemanalService } from '../../../services/menu-semanal.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-crear-platillo-dialog',
-  templateUrl: './crear-platillo-dialog.component.html',
-  styleUrls: ['./crear-platillo-dialog.component.css'],
-
+    selector: 'app-crear-platillo-dialog',
+    templateUrl: './crear-platillo-dialog.component.html',
+    styleUrls: ['./crear-platillo-dialog.component.css'],
+    standalone: true,
+    imports: [
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSlideToggleModule,
+        MatButtonModule,
+    ],
 })
 export class CrearPlatilloDialogComponent {
 

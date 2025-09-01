@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { User } from 'src/app/auth/interfaces/user.interface';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-  selector: 'app-layout-page',
-  templateUrl: './layout-page.component.html',
-  styles: [
-  ]
+    selector: 'app-layout-page',
+    templateUrl: './layout-page.component.html',
+    styles: [],
+    standalone: true,
+    imports: [MatToolbarModule, NgIf, MatButtonModule, RouterOutlet]
 })
 export class LayoutPageComponent {
 

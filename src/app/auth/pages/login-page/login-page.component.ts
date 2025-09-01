@@ -1,50 +1,79 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { FirebaseService } from '../../../services/firebase.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styles: [
-  ]
+  ],
+  standalone: true,
+  imports: [MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule,  ReactiveFormsModule ],
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent implements OnInit, OnDestroy{
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private firebaseService: FirebaseService
-  ){
+
+  authservice = inject(AuthService);
+
+  private aver?:Subscription;
+  ngOnDestroy(): void {
+    if(this.aver)
+      this.aver.unsubscribe();
   }
 
-  ngOnInit(): void {
-    this.init();
-  }
+  ngOnInit(): void
+  {
+    this.aver = this.authservice.algosofisticado.subscribe((session)=>{
 
-  async init(){
-    const redirectResult = await this.firebaseService.getRedirectResult();
-
-    if (redirectResult !== null) { // Usuario se ha logueado. 
-      /* Guardar información de sesión. */
-      this.authService.setSession(redirectResult.user, redirectResult.credential);
-      this.router.navigate(['/asignar-platillos'])
-      
-    } else if (this.firebaseService.loggedInUser() !== null){
-      console.log('redireccionar, ya esta logueado.');  
-      this.router.navigate(['/asignar-platillos'])
-    }else{
-      console.log('Requiere login');
-    }
+      if(session){
+        this.router.navigate(['/asignar-platillos'])
+      }
+    })
 
   }
-    
-  async clickLogin(){
-    // await this.firebaseService.signout()
-    //   .then(so => { console.log(so);
-    //   })
-    //   .catch(error => {console.log(error);});
-    await this.firebaseService.signInGoogleWithRedirect();
+
+  hide = signal(true);
+
+  showPass(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+
+  router = inject(Router)
+
+  formbuiler = inject(FormBuilder);
+  hasError = signal(false);
+
+  loginForm = this.formbuiler.group({
+    email: ['', [Validators.required, Validators.email], ],
+    password: ['', [Validators.required]]
+  });
+
+  onSubmit(){
+
+    let {email = '', password = ''} = this.loginForm.value;
+
+    this.authservice.authLogin(email!, password!).then((isauthenticated)=>{
+
+      if(isauthenticated)
+      {
+        this.router.navigate(['/asignar-platillos'])
+      }
+      else{
+        alert('Error al iniciar sesion')
+      }
+
+    })
+
   }
 
 }

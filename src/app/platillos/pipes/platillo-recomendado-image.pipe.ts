@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Platillo } from 'src/app/interfaces/menu-platillos.interface';
 
 @Pipe({
-  name: 'recomendadoImagen'
+    name: 'recomendadoImagen',
+    standalone: true
 })
 export class PlatilloRecomendadoImagenPipe implements PipeTransform {
 

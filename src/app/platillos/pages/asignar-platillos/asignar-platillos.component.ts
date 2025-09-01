@@ -8,13 +8,27 @@ import { AsignarPlatillosDragDialogComponent } from '../../components/asignar-pl
 import { CrearPlatilloDialogComponent } from '../../components/crear-platillo-dialog/crear-platillo-dialog.component';
 import * as moment from 'moment';
 import { BorrarPlatilloDialogComponent } from '../../components/borrar-platillo-dialog/borrar-platillo-dialog.component';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { PlatilloImagenPipe } from '../../pipes/platillo-imagen.pipe';
+import { ListItemPlatilloComponent } from '../../components/list-item-platillo/list-item-platillo.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { NgIf, NgFor, AsyncPipe, DatePipe } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
-  selector: 'app-asignar-platillos',
-  templateUrl: './asignar-platillos.component.html',
-  styleUrls: ['./asignar-platillos.component.css']
+    selector: 'app-asignar-platillos',
+    templateUrl: './asignar-platillos.component.html',
+    styleUrls: ['./asignar-platillos.component.css'],
+    standalone: true,
+    imports: [MatFormFieldModule, MatNativeDateModule, MatDatepickerModule, FormsModule, ReactiveFormsModule, NgIf, MatGridListModule, NgFor, MatButtonModule, MatListModule, MatProgressSpinnerModule, MatIconModule, MatDividerModule, ListItemPlatilloComponent, AsyncPipe, DatePipe, PlatilloImagenPipe]
 })
 export class AsignarPlatillosComponent  implements OnDestroy, OnInit {
   destroyed = new Subject<void>();

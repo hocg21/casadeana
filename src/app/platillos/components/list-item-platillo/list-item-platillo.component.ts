@@ -2,11 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Platillo } from 'src/app/interfaces/menu-platillos.interface';
 import { BorrarPlatilloDialogComponent } from '../borrar-platillo-dialog/borrar-platillo-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { PlatilloImagenPipe } from '../../pipes/platillo-imagen.pipe';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { MatListModule } from '@angular/material/list';
 
 @Component({
-  selector: 'list-item-platillo',
-  templateUrl: './list-item-platillo.component.html',
-  styleUrls: ['./list-item-platillo.component.css']
+    selector: 'list-item-platillo',
+    templateUrl: './list-item-platillo.component.html',
+    styleUrls: ['./list-item-platillo.component.css'],
+    standalone: true,
+    imports: [MatListModule, NgFor, MatButtonModule, MatIconModule, NgIf, AsyncPipe, PlatilloImagenPipe]
 })
 export class ListItemPlatilloComponent implements OnInit {
 

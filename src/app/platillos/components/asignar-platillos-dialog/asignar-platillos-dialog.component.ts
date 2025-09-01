@@ -1,13 +1,18 @@
 import { Component, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatSelectionList, MatSelectionListChange, MatListModule } from '@angular/material/list';
 import { Platillo } from 'src/app/interfaces/menu-platillos.interface';
 import { MenuSemanalService } from 'src/app/services/menu-semanal.service';
+import { MatButtonModule } from '@angular/material/button';
+import { NgFor, DatePipe } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
-  selector: 'app-asignar-platillos-dialog',
-  templateUrl: './asignar-platillos-dialog.component.html',
-  styleUrls: ['./asignar-platillos-dialog.component.css']
+    selector: 'app-asignar-platillos-dialog',
+    templateUrl: './asignar-platillos-dialog.component.html',
+    styleUrls: ['./asignar-platillos-dialog.component.css'],
+    standalone: true,
+    imports: [MatDialogModule, MatDividerModule, MatListModule, NgFor, MatButtonModule, DatePipe]
 })
 export class AsignarPlatillosDialogComponent {
 

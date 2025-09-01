@@ -4,11 +4,17 @@ import * as moment from 'moment';
 import { Subject, takeUntil } from 'rxjs';
 import { Platillo, PlatilloAsignacion } from 'src/app/interfaces/menu-platillos.interface';
 import { MenuSemanalService } from 'src/app/services/menu-semanal.service';
+import { PlatilloImagenPipe } from '../../pipes/platillo-imagen.pipe';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { NgFor, AsyncPipe, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-list-page',
-  templateUrl: './list-page.component.html',
-  styleUrls: ['./list-page.component.css']
+    selector: 'app-list-page',
+    templateUrl: './list-page.component.html',
+    styleUrls: ['./list-page.component.css'],
+    standalone: true,
+    imports: [NgFor, MatExpansionModule, MatCardModule, AsyncPipe, DatePipe, PlatilloImagenPipe]
 })
 export class ListPageComponent implements OnDestroy, OnInit {
   destroyed = new Subject<void>();

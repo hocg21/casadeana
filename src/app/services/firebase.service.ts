@@ -10,7 +10,10 @@ import {
   getAdditionalUserInfo,
   signInWithCredential,
   OAuthCredential,
-  signOut
+  signOut,
+  onAuthStateChanged,
+  User,
+  signInWithEmailAndPassword
 } from "firebase/auth";
 import {
   addDoc, collection,
@@ -39,6 +42,35 @@ export class FirebaseService {
     this.firestore = getFirestore(this.app);
     this.auth = getAuth(this.app);
     this.googleAuthProvider = new GoogleAuthProvider();
+  }
+
+  checkSessionStatus()
+  {
+    return new Promise<boolean>((resolve, reject) => {
+      onAuthStateChanged(this.auth, (user) => {
+        resolve (!!user);
+      });
+    });
+  }
+
+  logout()
+  {
+    signOut(this.auth).then(()=>{
+      return true
+    }).catch((error) =>{
+       return false
+    })
+  }
+
+  async login(email: string, password: string)
+  {
+    const user: User | undefined =  await signInWithEmailAndPassword(this.auth, email, password).then((UserCredential)=>{
+      return UserCredential.user
+    }).catch((error)=>{
+      return undefined;
+    });
+
+    return user;
   }
 
   public currentUser(){

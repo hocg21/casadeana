@@ -1,15 +1,12 @@
-import { PublicGuard } from './auth/guards/public.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotFoundPageComponent } from './shared/pages/not-found-page/not-found-page.component';
 
 //casadeanaslw.com/
-const routes: Routes = [
+export const routes: Routes = [
   {
-    path:'auth',
-    loadChildren: () => import ('./auth/auth.module').then(m=>m.AuthModule),
-    // canActivate: [PublicGuard],
-    // canMatch: [PublicGuard]
+    path:'login',
+    loadChildren: () => import('./auth/auth.routes')
   },
   {
     path:'',
@@ -25,8 +22,3 @@ const routes: Routes = [
   }
 ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }

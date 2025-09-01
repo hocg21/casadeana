@@ -17,12 +17,12 @@
     <!-- Del {{semanaForm.value.start | date:'dd/MM/yyyy'}} al {{semanaForm.value.end | date:'dd/MM/yyyy'}} -->
   </span>
 </div>
-<mat-grid-list cols="{{currentScreenSize == 'xsm' ? 1 : 5 }}"  >
+<!-- <mat-grid-list cols="{{currentScreenSize == 'xsm' ? 1 : 5 }}"  >
   <mat-grid-tile *ngFor="let dia of week_days" class="" [class.mat-elevation-z2]="true">
     <span class="dia-titulo">
 
       <button mat-fab extended color="primary" (click)=" asignarPlatillos(dia) ">
-        <!-- <mat-icon>add</mat-icon> -->
+        <mat-icon>add</mat-icon>
         <span class="header-dia" >
           {{dia.nombre}} <br> {{dia.fecha | date: 'dd/MM/YYYY'}}
         </span>
@@ -43,7 +43,7 @@
 
     </mat-list>
   </mat-grid-tile>
-</mat-grid-list>
+</mat-grid-list> -->
 
 <br>
 <mat-divider></mat-divider>

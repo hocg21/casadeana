@@ -1,28 +1,30 @@
-
-<div class="flex flex-column">
-  <!-- <span class="text-lg mb-4">Login 2</span>
+<form class="flex flex-col" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
   <mat-form-field>
-    <mat-label>Usuario</mat-label>
-    <input type="text" matInput placeholder="Nombre de Usuario">
-
+    <mat-label>Email</mat-label>
+    <input
+    formControlName="email"
+    matInput
+    type="email" >
   </mat-form-field>
+
   <mat-form-field>
-    <mat-label>Contrase&ntilde;a</mat-label>
-    <input type="password" matInput placeholder="Contrase&ntilde;a">
-
+    <mat-label>Password</mat-label>
+    <input formControlName="password" matInput [type]="hide() ? 'password' : 'text'" />
+    <span style="padding:10px"
+    matIconButton
+    matSuffix
+    (click)="showPass($event)"
+      [attr.aria-label]="'Hide password'"
+      [attr.aria-pressed]="hide()"
+      >
+      <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+    </span>
   </mat-form-field>
 
-  <button mat-button mat-flat-button color="primary" >
-    Ingresar
-  </button> -->
+  <button matButton="filled">Login</button>
 
-  <button mat-button mat-flat-button color="primary" (click)="clickLogin()">
-    Login Google
-  </button>
 
-  <!-- <div class="flex justify-content-end mt-5">
-    <a routerLink="/auth/new-account">Ya tienes cuenta?</a>
-  </div> -->
+</form>
 
-</div>
+

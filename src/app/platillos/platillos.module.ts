@@ -6,7 +6,7 @@ import { PlatilloPageComponent } from './pages/platillo-page/platillo-page.compo
 import { LayoutPageComponent } from './pages/layout-page/layout-page.component';
 import { ListPageComponent } from './pages/list-page/list-page.component';
 import { NewPageComponent } from './pages/new-page/new-page.component';
-import { MaterialModule } from '../material/material.module';
+
 import { AsignarPlatillosComponent } from './pages/asignar-platillos/asignar-platillos.component';
 import { AsignarPlatillosDialogComponent } from './components/asignar-platillos-dialog/asignar-platillos-dialog.component';
 import { AsignarPlatillosDragDialogComponent } from './components/asignar-platillos-drag-dialog/asignar-platillos-drag-dialog.component';
@@ -17,7 +17,9 @@ import { BorrarPlatilloDialogComponent } from './components/borrar-platillo-dial
 import { PlatilloRecomendadoImagenPipe } from './pipes/platillo-recomendado-image.pipe';
 
 @NgModule({
-  declarations: [
+    imports: [
+    CommonModule,
+    PlatillosRoutingModule,
     PlatilloPageComponent,
     LayoutPageComponent,
     ListPageComponent,
@@ -30,11 +32,6 @@ import { PlatilloRecomendadoImagenPipe } from './pipes/platillo-recomendado-imag
     PlatilloRecomendadoImagenPipe,
     ListItemPlatilloComponent,
     BorrarPlatilloDialogComponent
-  ],
-  imports: [
-    CommonModule,
-    PlatillosRoutingModule,
-    MaterialModule
-  ]
+]
 })
 export class PlatillosModule { }

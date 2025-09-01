@@ -4,7 +4,8 @@ import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { finalize } from 'rxjs';
 
 @Pipe({
-  name: 'platilloImagen'
+    name: 'platilloImagen',
+    standalone: true
 })
 export class PlatilloImagenPipe implements PipeTransform {
 

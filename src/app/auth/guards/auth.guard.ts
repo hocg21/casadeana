@@ -1,46 +1,24 @@
+import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { FirebaseService } from '../../services/firebase.service';
 
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanMatch, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
-import { Observable, tap } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+export const authGuard: CanActivateFn = async (route, state) => {
 
-@Injectable({providedIn: 'root'})
-export class AuthGuard implements CanMatch, CanActivate{
-
-  constructor(
-    private authService: AuthService,
-    private router: Router
-  ) { }
-
-  private checkAuthStatus() : boolean | Observable<boolean> {
-    return true;
-    /* return this.authService.checkAuthentication()
-      .pipe(
-        tap( isAuthenticated => {
-          if( !isAuthenticated ) this.router.navigate(['./auth/login'])
-        })
-      ) */
-
-  }
+  const firebaseService = inject(FirebaseService);
+  const router = inject(Router);
 
 
-  canMatch(route: Route, segments: UrlSegment[]): boolean | Observable<boolean >  {
-    return this.checkAuthStatus();
-    // console.log('can match')
-    // console.log({route, segments})
+  const isloggedin = await firebaseService.checkSessionStatus()
+  .catch((user)=>{
+    return false;
+  })
+  console.log(isloggedin);
 
-    // return true;
-    // throw new Error('Method not implemented.');
-  }
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean > {
+  if(isloggedin)
+    return true
+  else
+    router.navigateByUrl('/login');
 
-    return this.checkAuthStatus();
-    // console.log('can activate')
-    // console.log({route, state})
+  return false
 
-    // return true;
-
-    // throw new Error('Method not implemented.');
-  }
-
-}
+};

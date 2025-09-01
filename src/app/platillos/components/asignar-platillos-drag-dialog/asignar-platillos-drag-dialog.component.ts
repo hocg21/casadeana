@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatSelectionList, MatSelectionListChange } from '@angular/material/list';
 import { Platillo, PlatilloAAsignar, PlatilloAsignado } from 'src/app/interfaces/menu-platillos.interface';
 import { MenuSemanalService } from '../../../services/menu-semanal.service';
@@ -13,12 +13,19 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
+import { PlatilloImagenPipe } from '../../pipes/platillo-imagen.pipe';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { NgFor, NgIf, AsyncPipe, DatePipe } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 @Component({
-  selector: 'app-asignar-platillos-drag-dialog',
-  templateUrl: './asignar-platillos-drag-dialog.component.html',
-  styleUrls: ['./asignar-platillos-drag-dialog.component.css']
+    selector: 'app-asignar-platillos-drag-dialog',
+    templateUrl: './asignar-platillos-drag-dialog.component.html',
+    styleUrls: ['./asignar-platillos-drag-dialog.component.css'],
+    standalone: true,
+    imports: [MatDialogModule, MatDividerModule, CdkDropListGroup, CdkDropList, NgFor, CdkDrag, NgIf, MatIconModule, MatButtonModule, AsyncPipe, DatePipe, PlatilloImagenPipe]
 })
 export class AsignarPlatillosDragDialogComponent {
 
